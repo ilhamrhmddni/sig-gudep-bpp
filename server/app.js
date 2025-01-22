@@ -8,6 +8,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({ message: "Server Sudah Siap :D" });
+  res.json({ print: "Server Sudah Siap :D" });
 });
 
 module.exports = app;
