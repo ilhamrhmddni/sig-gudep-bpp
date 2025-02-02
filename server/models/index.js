@@ -1,8 +1,11 @@
 const { Sequelize } = require("sequelize");
 require("dotenv").config();
 
-const sequelize = new Sequelize(process.env.SUPABASE_URL, {
-  dialect: SUPABASE_DIALECT,
+const env = process.env.NODE_ENV || "production";
+const dbConfig = config[env];
+
+const sequelize = new Sequelize(dbConfig.SUPABASE_API_URL, {
+  dialect: dbConfig.SUPABASE_DIALECT,
   logging: false,
 });
 
