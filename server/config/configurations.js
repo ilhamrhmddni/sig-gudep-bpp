@@ -15,5 +15,6 @@ module.exports = {
     database: process.env.SUPABASE_DATABASE,
     host: process.env.SUPABASE_HOST,
     dialect: process.env.SUPABASE_DIALECT,
+    api: process.env.SUPABASE_API_URL,
   },
 };
