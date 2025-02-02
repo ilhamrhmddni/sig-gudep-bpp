@@ -4,7 +4,7 @@ module.exports = {
   // Ambil semua user
   getAllUser: async (req, res) => {
     try {
-      const allUser = await User.findAll(); // Mengambil semua user tanpa produk terkait
+      const allUser = await User.findAll();
 
       return res.status(200).json({
         message: "Data user berhasil didapatkan",
