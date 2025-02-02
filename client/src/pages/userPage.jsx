@@ -11,7 +11,9 @@ const UserPage = () => {
     // Ambil data user dari API
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/users"); // Sesuaikan dengan endpoint API
+        const response = await axios.get(
+          "https://sig-gudep-bpp-server.vercel.app/users"
+        ); // Sesuaikan dengan endpoint API
         setUsers(response.data.data);
       } catch (error) {
         console.error("Error fetching users:", error);

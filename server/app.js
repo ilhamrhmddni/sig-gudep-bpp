@@ -1,11 +1,14 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 require("dotenv").config();
 
 app.use(express.json());
-require("./config/configurations");
+app.use(cors());
 
-const port = process.env.PORT || 3000;
+const sequelize = require("./models/index");
+
+const port = process.env.PORT || 5432;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
