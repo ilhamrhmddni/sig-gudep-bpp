@@ -1,11 +1,11 @@
 // src/pages/UserPage.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserPage = () => {
   const [users, setUsers] = useState([]);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Ambil data user dari API
@@ -30,13 +30,13 @@ const UserPage = () => {
   };
 
   const handleEdit = (userId) => {
-    history.push(`/edit-user/${userId}`); // Mengarahkan ke halaman edit user
+    navigate.push(`/edit-user/${userId}`); // Mengarahkan ke halaman edit user
   };
 
   return (
     <div>
       <h1>Manage Users</h1>
-      <button onClick={() => history.push("/add-user")}>Add New User</button>
+      <button onClick={() => navigate.push("/add-user")}>Add New User</button>
       <table>
         <thead>
           <tr>
