@@ -1,4 +1,3 @@
-// src/pages/UserPage.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +13,7 @@ const UserPage = () => {
         const response = await axios.get(
           "https://sig-gudep-bpp-server.vercel.app/users"
         ); // Sesuaikan dengan endpoint API
-        setUsers(response.data.data);
+        setUsers(response.data); // Pastikan format data yang diterima sesuai
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -45,6 +44,8 @@ const UserPage = () => {
             <th>Full Name</th>
             <th>Username</th>
             <th>Email</th>
+            <th>Role</th>
+            <th>Phone Number</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -54,6 +55,8 @@ const UserPage = () => {
               <td>{user.fullname}</td>
               <td>{user.username}</td>
               <td>{user.email}</td>
+              <td>{user.role}</td>
+              <td>{user.no_telp || "Not provided"}</td>
               <td>
                 <button onClick={() => handleEdit(user.id)}>Edit</button>
                 <button onClick={() => handleDelete(user.id)}>Delete</button>

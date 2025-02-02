@@ -1,4 +1,3 @@
-// src/pages/AddUserPage.js
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +8,8 @@ const AddUserPage = () => {
     username: "",
     email: "",
     password: "",
+    role: "operator", // Default role
+    no_telp: "",
   });
   const navigate = useNavigate();
 
@@ -23,7 +24,11 @@ const AddUserPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/users", userData);
+      // Mengirim data ke API
+      await axios.post(
+        "https://sig-gudep-bpp-server.vercel.app/users",
+        userData
+      );
       navigate("/users"); // Redirect ke halaman user setelah berhasil tambah
     } catch (error) {
       console.error("Error adding user:", error);
@@ -67,6 +72,22 @@ const AddUserPage = () => {
             type="password"
             name="password"
             value={userData.password}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label>Role:</label>
+          <select name="role" value={userData.role} onChange={handleChange}>
+            <option value="admin">Admin</option>
+            <option value="moderator">Moderator</option>
+          </select>
+        </div>
+        <div>
+          <label>Phone Number (optional):</label>
+          <input
+            type="tel"
+            name="no_telp"
+            value={userData.no_telp}
             onChange={handleChange}
           />
         </div>
