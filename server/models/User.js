@@ -18,6 +18,26 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    role: {
+      type: DataTypes.ENUM("admin", "moderator"), // Menambahkan Enum untuk role
+      allowNull: false,
+    },
+    fullname: {
+      type: DataTypes.STRING, // Menambahkan fullname
+      allowNull: true, // Diperbolehkan kosong
+    },
+    asal: {
+      type: DataTypes.STRING, // Menambahkan asal
+      allowNull: true, // Diperbolehkan kosong
+    },
+    no_telp: {
+      type: DataTypes.INTEGER, // Menambahkan nomor telepon
+      allowNull: true, // Diperbolehkan kosong
+    },
+    photo_path: {
+      type: DataTypes.STRING, // Menambahkan path foto
+      allowNull: true, // Diperbolehkan kosong
+    },
   },
   {
     timestamps: true, // Menambahkan kolom createdAt dan updatedAt
