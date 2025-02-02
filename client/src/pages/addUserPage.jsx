@@ -1,7 +1,7 @@
 // src/pages/AddUserPage.js
 import React, { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AddUserPage = () => {
   const [userData, setUserData] = useState({
@@ -10,7 +10,7 @@ const AddUserPage = () => {
     email: "",
     password: "",
   });
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,7 +24,7 @@ const AddUserPage = () => {
     e.preventDefault();
     try {
       await axios.post("/api/users", userData);
-      history.push("/users"); // Redirect ke halaman user setelah berhasil tambah
+      navigate.push("/users"); // Redirect ke halaman user setelah berhasil tambah
     } catch (error) {
       console.error("Error adding user:", error);
     }
