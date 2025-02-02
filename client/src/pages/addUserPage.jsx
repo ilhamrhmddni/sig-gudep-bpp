@@ -24,7 +24,7 @@ const AddUserPage = () => {
     e.preventDefault();
     try {
       await axios.post("/api/users", userData);
-      navigate.push("/users"); // Redirect ke halaman user setelah berhasil tambah
+      navigate("/users"); // Redirect ke halaman user setelah berhasil tambah
     } catch (error) {
       console.error("Error adding user:", error);
     }

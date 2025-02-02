@@ -37,7 +37,7 @@ const EditUserPage = () => {
     e.preventDefault();
     try {
       await axios.put(`/api/users/${id}`, userData);
-      navigate.push("/users"); // Redirect ke halaman user setelah berhasil edit
+      navigate("/users"); // Redirect ke halaman user setelah berhasil edit
     } catch (error) {
       console.error("Error updating user:", error);
     }

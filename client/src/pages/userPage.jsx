@@ -30,13 +30,13 @@ const UserPage = () => {
   };
 
   const handleEdit = (userId) => {
-    navigate.push(`/edit-user/${userId}`); // Mengarahkan ke halaman edit user
+    navigate(`/edit-user/${userId}`); // Mengarahkan ke halaman edit user
   };
 
   return (
     <div>
       <h1>Manage Users</h1>
-      <button onClick={() => navigate.push("/add-user")}>Add New User</button>
+      <button onClick={() => navigate("/add-user")}>Add New User</button>
       <table>
         <thead>
           <tr>
