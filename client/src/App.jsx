@@ -1,7 +1,7 @@
 // src/App.js
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import UserPage from "/pages/UserPage"; // Pastikan path sesuai
+import UserPage from "./pages/userPage"; // Pastikan path sesuai
 import EditUserPage from "./pages/editUserPage"; // Jika ada halaman edit user
 import AddUserPage from "./pages/addUserPage"; // Jika ada halaman tambah user
 
