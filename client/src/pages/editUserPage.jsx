@@ -1,7 +1,7 @@
 // src/pages/EditUserPage.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EditUserPage = () => {
   const [userData, setUserData] = useState({
@@ -11,7 +11,7 @@ const EditUserPage = () => {
     password: "",
   });
   const { id } = useParams(); // Mendapatkan ID dari URL
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -37,7 +37,7 @@ const EditUserPage = () => {
     e.preventDefault();
     try {
       await axios.put(`/api/users/${id}`, userData);
-      history.push("/users"); // Redirect ke halaman user setelah berhasil edit
+      navigate.push("/users"); // Redirect ke halaman user setelah berhasil edit
     } catch (error) {
       console.error("Error updating user:", error);
     }
