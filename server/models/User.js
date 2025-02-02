@@ -1,5 +1,6 @@
+// models/User.js
 const { Sequelize, DataTypes } = require("sequelize");
-const sequelize = require("../db"); // Mengimpor koneksi dari db.js
+const { sequelize } = require("../models/index");
 
 const User = sequelize.define(
   "User",
@@ -19,28 +20,28 @@ const User = sequelize.define(
       allowNull: false,
     },
     role: {
-      type: DataTypes.ENUM("admin", "moderator"), // Menambahkan Enum untuk role
+      type: DataTypes.ENUM("admin", "moderator"),
       allowNull: false,
     },
     fullname: {
-      type: DataTypes.STRING, // Menambahkan fullname
+      type: DataTypes.STRING,
       allowNull: true, // Diperbolehkan kosong
     },
     asal: {
-      type: DataTypes.STRING, // Menambahkan asal
+      type: DataTypes.STRING,
       allowNull: true, // Diperbolehkan kosong
     },
     no_telp: {
-      type: DataTypes.INTEGER, // Menambahkan nomor telepon
+      type: DataTypes.INTEGER,
       allowNull: true, // Diperbolehkan kosong
     },
     photo_path: {
-      type: DataTypes.STRING, // Menambahkan path foto
+      type: DataTypes.STRING,
       allowNull: true, // Diperbolehkan kosong
     },
   },
   {
-    timestamps: true, // Menambahkan kolom createdAt dan updatedAt
+    timestamps: true,
   }
 );
 

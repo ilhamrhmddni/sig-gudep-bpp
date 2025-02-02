@@ -1,5 +1,15 @@
 const express = require("express");
-const router = express.Router();
+const route = express.Router();
+
 const userRoute = require("./user-route");
 
-router.use("/users", userRoute);
+route.get("/", (req, res) => {
+  res.json({
+    messsage:
+      "Sistem Informasi Geografis Pemetaan Gugus Depan Gerakan Pramuka Kota Balikpapan",
+  });
+});
+
+route.use("/users", userRoute);
+
+module.exports = route;

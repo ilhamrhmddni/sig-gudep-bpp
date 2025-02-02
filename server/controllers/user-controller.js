@@ -18,6 +18,24 @@ module.exports = {
     }
   },
 
+  getUser: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const user = await User.findByPk(id); // Mengambil semua user tanpa produk terkait
+
+      return res.status(200).json({
+        message: `Data user ${user} berhasil didapatkan`,
+        data: user,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Terjadi kesalahan server",
+        error: error.message,
+      });
+    }
+  },
+
   // Tambah user oleh admin
   addUser: async (req, res) => {
     const {
