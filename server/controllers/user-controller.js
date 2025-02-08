@@ -1,4 +1,4 @@
-const { User } = require("../models/User.js");
+const { User } = require("../models");
 
 module.exports = {
   // Ambil semua user
@@ -6,7 +6,7 @@ module.exports = {
     try {
       const allUser = await User.findAll();
       return res.status(200).json({
-        message: "Data user berhasil didapatkan",
+        message: "Data users berhasil didapatkan",
         data: allUser,
       });
     } catch (error) {
@@ -24,7 +24,7 @@ module.exports = {
       const user = await User.findByPk(id); // Mengambil semua user tanpa produk terkait
 
       return res.status(200).json({
-        message: `Data user ${user} berhasil didapatkan`,
+        message: `Data user berhasil didapatkan`,
         data: user,
       });
     } catch (error) {
