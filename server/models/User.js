@@ -32,7 +32,7 @@ const User = sequelize.define(
       allowNull: true, // Diperbolehkan kosong
     },
     no_telp: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: true, // Diperbolehkan kosong
     },
     photo_path: {
@@ -41,7 +41,7 @@ const User = sequelize.define(
     },
   },
   {
-    tableName: "users",
+    tableName: "User",
     timestamps: true,
   }
 );
