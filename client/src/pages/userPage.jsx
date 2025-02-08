@@ -23,7 +23,9 @@ const UserPage = () => {
 
   const handleDelete = async (userId) => {
     try {
-      await axios.delete(`/api/users/${userId}`);
+      await axios.delete(
+        `https://sig-gudep-bpp-server.vercel.app/users/${userId}`
+      );
       setUsers(users.filter((user) => user.id !== userId)); // Menghapus user dari state
     } catch (error) {
       console.error("Error deleting user:", error);

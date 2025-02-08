@@ -16,7 +16,9 @@ const EditUserPage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`/api/users/${id}`);
+        const response = await axios.get(
+          `https://sig-gudep-bpp-server.vercel.app/users/${id}`
+        );
         setUserData(response.data.data); // Pastikan data sesuai
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -36,7 +38,10 @@ const EditUserPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/api/users/${id}`, userData);
+      await axios.put(
+        `https://sig-gudep-bpp-server.vercel.app/users/${id}`,
+        userData
+      );
       navigate("/users"); // Redirect ke halaman user setelah berhasil edit
     } catch (error) {
       console.error("Error updating user:", error);
