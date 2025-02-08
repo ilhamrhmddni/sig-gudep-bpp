@@ -10,6 +10,8 @@ const AddUserPage = () => {
     password: "",
     role: "operator", // Default role
     no_telp: "",
+    asal: "",
+    photo_path: "",
   });
   const navigate = useNavigate();
 
@@ -79,7 +81,7 @@ const AddUserPage = () => {
           <label>Role:</label>
           <select name="role" value={userData.role} onChange={handleChange}>
             <option value="admin">Admin</option>
-            <option value="moderator">Moderator</option>
+            <option value="operator">Operator</option>
           </select>
         </div>
         <div>
