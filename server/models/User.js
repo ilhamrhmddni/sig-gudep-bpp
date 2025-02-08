@@ -1,6 +1,6 @@
 // models/User.js
 const { Sequelize, DataTypes } = require("sequelize");
-const { sequelize } = require("../models/index");
+const sequelize = require("../config/db");
 
 const User = sequelize.define(
   "User",
@@ -20,7 +20,7 @@ const User = sequelize.define(
       allowNull: false,
     },
     role: {
-      type: DataTypes.ENUM("admin", "moderator"),
+      type: DataTypes.ENUM("admin", "operator"),
       allowNull: false,
     },
     fullname: {

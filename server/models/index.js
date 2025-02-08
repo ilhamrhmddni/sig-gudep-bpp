@@ -1,22 +1,10 @@
-const { Sequelize } = require("sequelize");
-require("dotenv").config();
-const config = require("../config/configurations");
+const Sequelize = require("sequelize");
+const sequelize = require("../config/db");
 
-const env = process.env.NODE_ENV || "production";
-const dbConfig = config[env];
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
-const sequelize = new Sequelize(dbConfig.api, {
-  dialect: dbConfig.dialect,
-  logging: false,
-});
+db.User = require("./User");
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Koneksi ke database berhasil!");
-  })
-  .catch((err) => {
-    console.error("Tidak dapat terhubung ke database:", err);
-  });
-
-module.exports = sequelize;
+module.exports = db;
