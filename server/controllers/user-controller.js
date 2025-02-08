@@ -5,7 +5,6 @@ module.exports = {
   getAllUser: async (req, res) => {
     try {
       const allUser = await User.findAll();
-
       return res.status(200).json({
         message: "Data user berhasil didapatkan",
         data: allUser,
