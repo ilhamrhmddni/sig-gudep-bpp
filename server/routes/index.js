@@ -2,7 +2,7 @@ const express = require("express");
 const route = express.Router();
 
 const userRoute = require("./user-route");
-const geographicalRoute = require("./geographical-route");
+const geografisRoute = require("./geografis-route");
 const kwarranRoute = require("./kwarran-route");
 const pesertadidikRoute = require("./pesertadidik-route");
 const laporanRoute = require("./laporan-route");
@@ -16,7 +16,7 @@ route.get("/", (req, res) => {
 });
 
 route.use("/users", userRoute);
-route.use("/geographicals", geographicalRoute);
+route.use("/geografis", geografisRoute);
 route.use("/kwarrans", kwarranRoute);
 route.use("/pesertadidik", pesertadidikRoute);
 route.use("/laporan", laporanRoute);

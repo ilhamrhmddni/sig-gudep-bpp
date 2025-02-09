@@ -1,13 +1,13 @@
-const { Geographical } = require("../models");
+const { Geografis } = require("../models");
 
 module.exports = {
   // Ambil semua data geografis
-  getAllGeographical: async (req, res) => {
+  getAllGeografis: async (req, res) => {
     try {
-      const allGeographical = await Geographical.findAll();
+      const allGeografis = await Geografis.findAll();
       return res.status(200).json({
         message: "Data geografis berhasil didapatkan",
-        data: allGeographical,
+        data: allGeografis,
       });
     } catch (error) {
       return res.status(500).json({
@@ -18,13 +18,13 @@ module.exports = {
   },
 
   // Ambil satu data geografis berdasarkan ID
-  getGeographical: async (req, res) => {
+  getGeografis: async (req, res) => {
     const { id } = req.params;
 
     try {
-      const geographical = await Geographical.findByPk(id);
+      const geografis = await Geografis.findByPk(id);
 
-      if (!geographical) {
+      if (!geografis) {
         return res
           .status(404)
           .json({ message: "Data geografis tidak ditemukan" });
@@ -32,7 +32,7 @@ module.exports = {
 
       return res.status(200).json({
         message: "Data geografis berhasil didapatkan",
-        data: geographical,
+        data: Geografis,
       });
     } catch (error) {
       return res.status(500).json({
@@ -43,7 +43,7 @@ module.exports = {
   },
 
   // Tambah data geografis
-  addGeographical: async (req, res) => {
+  addGeografis: async (req, res) => {
     const { titik_koordinat, longitude, latitude, alamat } = req.body;
 
     if (!longitude || !latitude) {
@@ -53,7 +53,7 @@ module.exports = {
     }
 
     try {
-      const newGeographical = await Geographical.create({
+      const newGeografis = await Geografis.create({
         titik_koordinat,
         longitude,
         latitude,
@@ -61,7 +61,7 @@ module.exports = {
       });
       return res.status(201).json({
         message: "Data geografis berhasil ditambahkan",
-        data: newGeographical,
+        data: newGeografis,
       });
     } catch (error) {
       return res.status(500).json({
@@ -72,16 +72,16 @@ module.exports = {
   },
 
   // Hapus data geografis berdasarkan ID
-  deleteGeographical: async (req, res) => {
+  deleteGeografis: async (req, res) => {
     const { id } = req.params;
     try {
-      const geographical = await Geographical.findByPk(id);
-      if (!geographical) {
+      const geografis = await Geografis.findByPk(id);
+      if (!geografis) {
         return res
           .status(404)
           .json({ message: "Data geografis tidak ditemukan" });
       }
-      await geographical.destroy();
+      await geografis.destroy();
       return res
         .status(200)
         .json({ message: "Data geografis berhasil dihapus" });
@@ -94,14 +94,14 @@ module.exports = {
   },
 
   // Edit data geografis berdasarkan ID
-  updateGeographical: async (req, res) => {
+  updateGeografis: async (req, res) => {
     const { id } = req.params;
     const { titik_koordinat, longitude, latitude, alamat } = req.body;
 
     try {
-      const geographical = await Geographical.findByPk(id);
+      const geografis = await Geografis.findByPk(id);
 
-      if (!geographical) {
+      if (!geografis) {
         return res
           .status(404)
           .json({ message: "Data geografis tidak ditemukan" });
@@ -113,7 +113,7 @@ module.exports = {
         });
       }
 
-      await geographical.update({
+      await geografis.update({
         titik_koordinat,
         longitude,
         latitude,
@@ -122,7 +122,7 @@ module.exports = {
 
       return res.status(200).json({
         message: "Data geografis berhasil diperbarui",
-        data: geographical,
+        data: geografis,
       });
     } catch (error) {
       return res.status(500).json({

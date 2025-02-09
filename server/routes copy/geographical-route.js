@@ -7,7 +7,7 @@ const {
   addGeographical,
   deleteGeographical,
   updateGeographical,
-} = require("../controllers/geographical-controller.js");
+} = require("../controllers/geografis-controller.js");
 
 route.get("/", getAllGeographical);
 route.get("/:id", getGeographical);

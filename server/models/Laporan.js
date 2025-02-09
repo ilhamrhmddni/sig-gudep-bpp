@@ -32,7 +32,7 @@ const Laporan = sequelize.define(
     status: {
       type: DataTypes.ENUM("diproses", "selesai"),
       allowNull: false,
-      defaultValue: "pending",
+      defaultValue: "diproses",
     },
   },
   {

@@ -7,7 +7,7 @@ db.sequelize = sequelize;
 
 db.User = require("./User");
 db.PesertaDidik = require("./PesertaDidik");
-db.Geographical = require("./Geographical");
+db.Geografis = require("./Geografis");
 db.Kwarran = require("./Kwarran");
 db.Laporan = require("./Laporan");
 db.Gudep = require("./Gudep");
@@ -28,11 +28,11 @@ db.Gudep.belongsTo(db.Geografis, {
 // Relasi Many-to-Many
 db.Event.belongsToMany(db.Gudep, {
   through: db.EventGudep,
-  foreignKey: "eventId",
+  foreignKey: "event_id",
 });
 db.Gudep.belongsToMany(db.Event, {
   through: db.EventGudep,
-  foreignKey: "gudepId",
+  foreignKey: "gudep_id",
 });
 
 module.exports = db;
