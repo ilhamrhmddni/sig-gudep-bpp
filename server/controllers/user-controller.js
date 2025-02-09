@@ -21,7 +21,7 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const user = await User.findByPk(id); // Mengambil semua user tanpa produk terkait
+      const user = await User.findByPk(id);
 
       return res.status(200).json({
         message: `Data user berhasil didapatkan`,
@@ -35,7 +35,6 @@ module.exports = {
     }
   },
 
-  // Tambah user oleh admin
   addUser: async (req, res) => {
     const {
       username,
@@ -49,7 +48,6 @@ module.exports = {
     } = req.body;
 
     try {
-      // Cek jika email atau username sudah ada
       const existingUser = await User.findOne({
         where: { email },
       });
@@ -83,9 +81,8 @@ module.exports = {
     }
   },
 
-  // Hapus user oleh admin
   deleteUser: async (req, res) => {
-    const { id } = req.params; // Ambil ID user dari parameter
+    const { id } = req.params;
 
     try {
       const user = await User.findByPk(id);
@@ -96,7 +93,7 @@ module.exports = {
         });
       }
 
-      await user.destroy(); // Menghapus user
+      await user.destroy();
 
       return res.status(200).json({
         message: "User berhasil dihapus",
@@ -109,9 +106,8 @@ module.exports = {
     }
   },
 
-  // Edit user oleh admin
   updateUser: async (req, res) => {
-    const { id } = req.params; // Ambil ID user dari parameter
+    const { id } = req.params;
     const {
       username,
       email,
@@ -132,11 +128,10 @@ module.exports = {
         });
       }
 
-      // Perbarui data user
       await user.update({
         username,
         email,
-        password, // Tidak perlu mengenkripsi password
+        password,
         role,
         fullname,
         asal,

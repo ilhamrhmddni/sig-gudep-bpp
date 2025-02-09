@@ -5,10 +5,16 @@ const sequelize = require("../config/db");
 const User = sequelize.define(
   "User",
   {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     username: {
       type: DataTypes.STRING,
-      allowNull: false, // Tidak boleh kosong
-      unique: true, // Username harus unik
+      allowNull: false,
+      unique: true,
     },
     email: {
       type: DataTypes.STRING,
