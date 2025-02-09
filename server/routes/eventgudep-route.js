@@ -10,9 +10,9 @@ const {
 } = require("../controllers/eventgudep-controller.js");
 
 route.get("/", getAllEventGudeps);
-route.get("/:eventId/:gudepId", getEventGudepById); // Ambil 1 event_gudep
+route.get("/:eventId/:gudepId", getEventGudepById);
 route.post("/", addEventGudep);
-route.put("/:eventId/:gudepId", updateEventGudep); // Edit event_gudep
+route.put("/:eventId/:gudepId", updateEventGudep);
 route.delete("/:eventId/:gudepId", deleteEventGudep);
 
 module.exports = route;
