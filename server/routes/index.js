@@ -1,5 +1,6 @@
 const express = require("express");
 const route = express.Router();
+const apiKey = require("../middleware/api-key");
 
 const userRoute = require("./user-route");
 const geografisRoute = require("./geografis-route");
@@ -18,14 +19,14 @@ route.get("/", (req, res) => {
   });
 });
 
-route.use("/user", userRoute);
-route.use("/geografis", geografisRoute);
-route.use("/kwarran", kwarranRoute);
-route.use("/pesertadidik", pesertadidikRoute);
-route.use("/laporan", laporanRoute);
-route.use("/gudep", gudepRoute);
-route.use("/event", eventRoute);
-route.use("/eventgudep", eventGudepRoute);
+route.use("/user", apiKey, userRoute);
+route.use("/geografis", apiKey, geografisRoute);
+route.use("/kwarran", apiKey, kwarranRoute);
+route.use("/pesertadidik", apiKey, pesertadidikRoute);
+route.use("/laporan", apiKey, laporanRoute);
+route.use("/gudep", apiKey, gudepRoute);
+route.use("/event", apiKey, eventRoute);
+route.use("/eventgudep", apiKey, eventGudepRoute);
 route.use("/auth", authRoute);
 
 module.exports = route;
