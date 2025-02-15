@@ -2,8 +2,8 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const Geographical = sequelize.define(
-  "Geographical",
+const Geografis = sequelize.define(
+  "Geografis",
   {
     id: {
       type: DataTypes.UUID,
@@ -11,17 +11,28 @@ const Geographical = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
+    gudep_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: "gudep",
+        key: "id",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+      field: "gudep_id",
+    },
     titik_koordinat: {
       type: DataTypes.STRING,
       allowNull: true,
     },
     longitude: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     latitude: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     alamat: {
       type: DataTypes.STRING,
@@ -29,14 +40,11 @@ const Geographical = sequelize.define(
     },
   },
   {
-    tableName: "Geographicals",
+    sequelize,
     timestamps: true,
+    freezeTableName: true,
+    tableName: "geografis",
   }
 );
 
-// Sinkronisasi model dengan tabel di database
-Geographical.sync()
-  .then(() => console.log("Tabel Geografis berhasil dibuat di database"))
-  .catch((err) => console.error("Gagal membuat tabel Geografis:", err));
-
-module.exports = Geographical;
+module.exports = Geografis;

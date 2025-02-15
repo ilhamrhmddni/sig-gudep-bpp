@@ -4,23 +4,33 @@ const sequelize = require("../config/db");
 const EventGudep = sequelize.define(
   "EventGudep",
   {
-    eventId: {
-      type: DataTypes.INTEGER,
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
+      primaryKey: true,
+    },
+    event_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
       references: {
-        model: "events",
+        model: "event",
         key: "id",
       },
+      onUpdate: "CASCADE",
       onDelete: "CASCADE",
+      field: "event_id",
     },
-    gudepId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    gudep_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
       references: {
         model: "gudep",
         key: "id",
       },
+      onUpdate: "CASCADE",
       onDelete: "CASCADE",
+      field: "gudep_id",
     },
     keterangan: {
       type: DataTypes.STRING,
@@ -28,8 +38,9 @@ const EventGudep = sequelize.define(
     },
   },
   {
-    tableName: "EventGudeps",
     timestamps: false,
+    freezeTableName: true,
+    tableName: "eventgudep",
   }
 );
 

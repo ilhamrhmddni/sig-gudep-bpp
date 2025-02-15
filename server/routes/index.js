@@ -9,6 +9,7 @@ const laporanRoute = require("./laporan-route");
 const gudepRoute = require("./gudep-route");
 const eventRoute = require("./event-route");
 const eventGudepRoute = require("./eventgudep-route");
+const authRoute = require("./auth-route");
 
 route.get("/", (req, res) => {
   res.json({
@@ -17,13 +18,14 @@ route.get("/", (req, res) => {
   });
 });
 
-route.use("/users", userRoute);
+route.use("/user", userRoute);
 route.use("/geografis", geografisRoute);
-route.use("/kwarrans", kwarranRoute);
+route.use("/kwarran", kwarranRoute);
 route.use("/pesertadidik", pesertadidikRoute);
 route.use("/laporan", laporanRoute);
 route.use("/gudep", gudepRoute);
-route.use("/event", gudepRoute);
+route.use("/event", eventRoute);
 route.use("/eventgudep", eventGudepRoute);
+route.use("/auth", authRoute);
 
 module.exports = route;

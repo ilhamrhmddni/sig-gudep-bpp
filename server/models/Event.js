@@ -1,12 +1,13 @@
-const { DataTypes } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
 const Event = sequelize.define(
   "Event",
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
       primaryKey: true,
     },
     nama: {
@@ -31,8 +32,10 @@ const Event = sequelize.define(
     },
   },
   {
-    tableName: "Events",
+    sequelize,
     timestamps: false,
+    freezeTableName: true,
+    tableName: "event",
   }
 );
 

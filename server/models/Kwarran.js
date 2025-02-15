@@ -29,7 +29,7 @@ const Kwarran = sequelize.define(
     },
     jumlah_gudep: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      defaultValue: 0, // Default awal adalah 0
     },
     email: {
       type: DataTypes.STRING,
@@ -40,13 +40,11 @@ const Kwarran = sequelize.define(
     },
   },
   {
-    tableName: "Kwarrans",
+    sequelize,
     timestamps: true,
+    freezeTableName: true,
+    tableName: "kwarran",
   }
 );
-
-Kwarran.sync()
-  .then(() => console.log("Tabel Kwarran berhasil dibuat di database"))
-  .catch((err) => console.error("Gagal membuat tabel Kwarran:", err));
 
 module.exports = Kwarran;

@@ -1,9 +1,12 @@
 // models/User.js
-const { Sequelize, DataTypes } = require("sequelize");
+const { Sequelize, Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
+const Gudep = require("./Gudep");
+const Geografis = require("./Geografis");
 
-const User = sequelize.define(
-  "User",
+class User extends Model {}
+
+User.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -27,34 +30,44 @@ const User = sequelize.define(
     },
     role: {
       type: DataTypes.ENUM("admin", "operator"),
+      defaultValue: "operator",
       allowNull: false,
     },
     fullname: {
       type: DataTypes.STRING,
-      allowNull: true, // Diperbolehkan kosong
+      allowNull: true,
     },
     asal: {
       type: DataTypes.STRING,
-      allowNull: true, // Diperbolehkan kosong
+      allowNull: true,
     },
     no_telp: {
       type: DataTypes.STRING,
-      allowNull: true, // Diperbolehkan kosong
+      allowNull: true,
     },
     photo_path: {
       type: DataTypes.STRING,
-      allowNull: true, // Diperbolehkan kosong
+      allowNull: true,
+    },
+    isLoggedIn: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   },
   {
-    tableName: "Users",
+    sequelize,
+    freezeTableName: true,
     timestamps: true,
+    tableName: "user",
   }
 );
 
-// Sinkronisasi model dengan tabel di database
-User.sync()
-  .then(() => console.log("Tabel User berhasil dibuat di database"))
-  .catch((err) => console.error("Gagal membuat tabel User:", err));
+// Ketika User dibuat, otomatis buat Geografis dan Gudep
+User.afterCreate(async (user) => {
+  const gudep = await Gudep.create({ user_id: user.id });
+  await Geografis.create({ gudep_id: gudep.id });
+
+  console.log("Geografis dan Gudep berhasil dibuat secara otomatis.");
+});
 
 module.exports = User;

@@ -44,7 +44,7 @@ module.exports = {
     const { kode, nama, ketua_kwarran, ketua_dkr, jumlah_gudep, email } =
       req.body;
 
-    if (!kode || !nama || !jumlah_gudep) {
+    if (!kode || !nama) {
       return res.status(400).json({
         message: "Kode, nama, dan jumlah gugus depan wajib diisi",
       });

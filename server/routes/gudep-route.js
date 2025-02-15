@@ -11,8 +11,6 @@ const {
 
 route.get("/", getAllGudep);
 route.get("/:id", getGudep);
-route.post("/", addGudep);
 route.put("/:id", updateGudep);
-route.delete("/:id", deleteGudep);
 
 module.exports = route;

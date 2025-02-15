@@ -36,13 +36,11 @@ const Laporan = sequelize.define(
     },
   },
   {
-    tableName: "Laporans",
+    sequelize,
+    freezeTableName: true,
     timestamps: true,
+    tableName: "laporan",
   }
 );
-
-Laporan.sync()
-  .then(() => console.log("Tabel Kwarran berhasil dibuat di database"))
-  .catch((err) => console.error("Gagal membuat tabel Kwarran:", err));
 
 module.exports = Laporan;

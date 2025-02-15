@@ -6,8 +6,8 @@ module.exports = {
     try {
       const allEventGudeps = await EventGudep.findAll({
         include: [
-          { model: Event, attributes: ["id", "nama"] },
-          { model: Gudep, attributes: ["id", "nama"] },
+          { model: Event, attributes: ["id", "nama"], required: true },
+          { model: Gudep, attributes: ["id", "no_gudep"], required: true },
         ],
       });
       return res.status(200).json({
@@ -22,16 +22,16 @@ module.exports = {
     }
   },
 
-  // Ambil satu data event_gudep berdasarkan eventId dan gudepId
+  // Ambil satu data event_gudep berdasarkan event_id dan gudep_id
   getEventGudepById: async (req, res) => {
-    const { eventId, gudepId } = req.params;
+    const { event_id, gudep_id } = req.params;
 
     try {
       const eventGudep = await EventGudep.findOne({
-        where: { eventId, gudepId },
+        where: { event_id, gudep_id },
         include: [
           { model: Event, attributes: ["id", "nama"] },
-          { model: Gudep, attributes: ["id", "nama"] },
+          { model: Gudep, attributes: ["id", "no_gudep"] },
         ],
       });
 
@@ -55,16 +55,16 @@ module.exports = {
 
   // Tambah hubungan event dengan gudep
   addEventGudep: async (req, res) => {
-    const { eventId, gudepId } = req.body;
+    const { event_id, gudep_id } = req.body;
 
-    if (!eventId || !gudepId) {
+    if (!event_id || !gudep_id) {
       return res.status(400).json({
         message: "Event ID dan Gudep ID wajib diisi",
       });
     }
 
     try {
-      const newEventGudep = await EventGudep.create({ eventId, gudepId });
+      const newEventGudep = await EventGudep.create({ event_id, gudep_id });
       return res.status(201).json({
         message: "Relasi event dan gudep berhasil ditambahkan",
         data: newEventGudep,
@@ -79,12 +79,12 @@ module.exports = {
 
   // Edit hubungan event dengan gudep
   updateEventGudep: async (req, res) => {
-    const { eventId, gudepId } = req.params;
-    const { newEventId, newGudepId } = req.body;
+    const { event_id, gudep_id } = req.params;
+    const { newevent_id, newgudep_id } = req.body;
 
     try {
       const eventGudep = await EventGudep.findOne({
-        where: { eventId, gudepId },
+        where: { event_id, gudep_id },
       });
 
       if (!eventGudep) {
@@ -93,8 +93,8 @@ module.exports = {
         });
       }
 
-      eventGudep.eventId = newEventId || eventGudep.eventId;
-      eventGudep.gudepId = newGudepId || eventGudep.gudepId;
+      eventGudep.event_id = newevent_id || eventGudep.event_id;
+      eventGudep.gudep_id = newgudep_id || eventGudep.gudep_id;
 
       await eventGudep.save();
 
@@ -112,11 +112,11 @@ module.exports = {
 
   // Hapus hubungan event dengan gudep
   deleteEventGudep: async (req, res) => {
-    const { eventId, gudepId } = req.params;
+    const { event_id, gudep_id } = req.params;
 
     try {
       const eventGudep = await EventGudep.findOne({
-        where: { eventId, gudepId },
+        where: { event_id, gudep_id },
       });
 
       if (!eventGudep) {

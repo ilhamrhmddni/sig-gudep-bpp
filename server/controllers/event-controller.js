@@ -1,44 +1,7 @@
 const { Event } = require("../models");
 
 module.exports = {
-  // Ambil semua data event
-  getAllEvents: async (req, res) => {
-    try {
-      const allEvents = await Event.findAll();
-      return res.status(200).json({
-        message: "Data event berhasil didapatkan",
-        data: allEvents,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Terjadi kesalahan server",
-        error: error.message,
-      });
-    }
-  },
-
-  // Ambil satu data event berdasarkan ID
-  getEvent: async (req, res) => {
-    const { id } = req.params;
-
-    try {
-      const event = await Event.findByPk(id);
-
-      if (!event) {
-        return res.status(404).json({ message: "Data event tidak ditemukan" });
-      }
-
-      return res.status(200).json({
-        message: "Data event berhasil didapatkan",
-        data: event,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Terjadi kesalahan server",
-        error: error.message,
-      });
-    }
-  },
+  // Operator
 
   // Tambah data event
   addEvent: async (req, res) => {
@@ -69,6 +32,8 @@ module.exports = {
       });
     }
   },
+
+  // Admin
 
   // Hapus data event berdasarkan ID
   deleteEvent: async (req, res) => {
@@ -116,6 +81,45 @@ module.exports = {
 
       return res.status(200).json({
         message: "Data event berhasil diperbarui",
+        data: event,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Terjadi kesalahan server",
+        error: error.message,
+      });
+    }
+  },
+
+  // Ambil semua data event
+  getAllEvents: async (req, res) => {
+    try {
+      const allEvents = await Event.findAll();
+      return res.status(200).json({
+        message: "Data event berhasil didapatkan",
+        data: allEvents,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Terjadi kesalahan server",
+        error: error.message,
+      });
+    }
+  },
+
+  // Ambil satu data event berdasarkan ID
+  getEvent: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const event = await Event.findByPk(id);
+
+      if (!event) {
+        return res.status(404).json({ message: "Data event tidak ditemukan" });
+      }
+
+      return res.status(200).json({
+        message: "Data event berhasil didapatkan",
         data: event,
       });
     } catch (error) {

@@ -5,13 +5,21 @@ const PesertaDidik = sequelize.define(
   "PesertaDidik",
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
       primaryKey: true,
     },
-    id_gudep: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+    gudep_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: "gudep",
+        key: "id",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+      field: "gudep_id",
     },
     nama: {
       type: DataTypes.STRING,
@@ -31,13 +39,11 @@ const PesertaDidik = sequelize.define(
     },
   },
   {
-    tableName: "PesertaDidiks",
+    sequelize,
+    freezeTableName: true,
     timestamps: true,
+    tableName: "pesertadidik",
   }
 );
-
-PesertaDidik.sync()
-  .then(() => console.log("Tabel PesertaDidik berhasil dibuat di database"))
-  .catch((err) => console.error("Gagal membuat tabel PesertaDidik:", err));
 
 module.exports = PesertaDidik;
