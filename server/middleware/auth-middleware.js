@@ -10,9 +10,10 @@ const verifyToken = (req, res, next) => {
   const token = authHeader.split(" ")[1];
   try {
     const decoded = jwt.verify(token, secretKey);
-    req.user = decoded;
+    req.user = decoded; // Pastikan ini berisi informasi pengguna
     next();
   } catch (error) {
+    console.error("Token verification failed:", error); // Log jika verifikasi token gagal
     return res.status(401).json({ message: "Token tidak valid" });
   }
 };

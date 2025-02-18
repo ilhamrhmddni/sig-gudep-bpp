@@ -57,7 +57,7 @@ module.exports = {
 
       // Tentukan URL tujuan berdasarkan peran
       const redirectUrl =
-        user.role === "admin" ? "/admin/dashboard" : "/operator/dashboard";
+        user.role === "admin" ? "admin/kwarran" : "operator/gugusdepan";
 
       // Kirim respons ke front-end dengan ID user, gudep, dan geografis
       res.status(200).json({
@@ -81,19 +81,17 @@ module.exports = {
   },
   logout: async (req, res) => {
     try {
-      const userId = req.user.user_id;
+      const userId = req.user.user_id; // Ambil user_id dari token
 
-      // Cari user berdasarkan ID
       const user = await User.findByPk(userId);
       if (!user) {
-        return res.status(404).json({ message: "User tidak ditemukan" });
+        return res.status(404).json({ message: "User  tidak ditemukan" });
       }
 
-      // Tandai user sebagai logout
-      await user.update({ isLoggedIn: false });
-
+      await user.update({ isLoggedIn: false }); // Perbarui status isLoggedIn
       res.status(200).json({ message: "Logout berhasil" });
     } catch (error) {
+      console.error("Error during logout:", error);
       res.status(500).json({ message: "Gagal logout", error: error.message });
     }
   },

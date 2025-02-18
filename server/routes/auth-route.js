@@ -5,7 +5,7 @@ const { verifyToken } = require("../middleware/auth-middleware");
 const loginLimiter = require("../middleware/rate-limiter");
 
 // Login
-router.post("/login", loginLimiter, authController.login);
+router.post("/login", authController.login);
 
 // Logout
 router.post("/logout", verifyToken, authController.logout);
