@@ -7,8 +7,6 @@ require("dotenv").config();
 
 const allowedOrigins = ["https://sig-gudep-bpp.vercel.app/"];
 
-app.use(cors());
-
 app.use(express.json());
 
 app.use(
