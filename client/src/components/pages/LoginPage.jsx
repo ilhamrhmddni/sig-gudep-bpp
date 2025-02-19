@@ -6,7 +6,7 @@ import PrimaryButton from "../atoms/PrimaryButton";
 import { login } from "../../services/AuthService";
 import Swal from "sweetalert2";
 
-const LoginPage = () => {
+const loginPage = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const navigate = useNavigate();
 
@@ -126,4 +126,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default loginPage;
