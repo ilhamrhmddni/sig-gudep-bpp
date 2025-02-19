@@ -14,11 +14,13 @@ import AdminPesertaDidik from "./components/pages/admin/AdminPesertaDidik";
 import AdminEvent from "./components/pages/admin/AdminEvent";
 import AdminOperator from "./components/pages/admin/AdminOperator";
 import AdminRequestLaporanGudep from "./components/pages/admin/AdminRequestLaporanGudep";
+import TemplateUser from "./components/templates/UserTemplate";
 
 const App = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<TemplateUser />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/operator/gugusdepan"
