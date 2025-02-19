@@ -1,19 +1,25 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginPage from "./components/pages/LoginPage";
+import LoginPage from "./components/pages/loginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import OperatorGugusDepan from "./components/pages/operator/OperatorGugusDepan";
 import OperatorGeografis from "./components/pages/operator/OperatorGeografis";
 import OperatorPesertaDidik from "./components/pages/operator/OperatorPesertaDidik";
 import OperatorEvent from "./components/pages/operator/OperatorEvent";
 import AdminKwarran from "./components/pages/admin/AdminKwarran";
-import NotFound from "./components/pages/NotFound"; // Import komponen NotFound
+import NotFound from "./components/pages/NotFound";
+import AdminGugusDepan from "./components/pages/admin/AdminGugusDepan";
+import AdminGeografis from "./components/pages/admin/AdminGeografis";
+import AdminPesertaDidik from "./components/pages/admin/AdminPesertaDidik";
+import AdminEvent from "./components/pages/admin/AdminEvent";
+import AdminOperator from "./components/pages/admin/AdminOperator";
+import AdminRequestLaporanGudep from "./components/pages/admin/AdminRequestLaporanGudep";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route
           path="/operator/gugusdepan"
           element={
@@ -55,10 +61,50 @@ const App = () => {
           }
         />
         <Route
+          path="/admin/operator"
+          element={
+            <ProtectedRoute>
+              <AdminOperator />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/admin/pesertadidik"
           element={
             <ProtectedRoute>
-              <AdminKwarran />
+              <AdminPesertaDidik />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/gugusdepan"
+          element={
+            <ProtectedRoute>
+              <AdminGugusDepan />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/geografis"
+          element={
+            <ProtectedRoute>
+              <AdminGeografis />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/event"
+          element={
+            <ProtectedRoute>
+              <AdminEvent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/requestlaporangudep"
+          element={
+            <ProtectedRoute>
+              <AdminRequestLaporanGudep />
             </ProtectedRoute>
           }
         />

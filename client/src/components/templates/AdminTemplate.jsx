@@ -23,7 +23,7 @@ const AdminTemplate = ({ children }) => {
     {
       name: "Gugus Depan",
       icon: "school", // Nama ikon dari Google Icons
-      path: "/admin/gugus-depan", // Ganti dengan path yang sesuai
+      path: "/admin/gugusdepan", // Ganti dengan path yang sesuai
     },
     {
       name: "Geografis",
@@ -43,7 +43,7 @@ const AdminTemplate = ({ children }) => {
     {
       name: "Request Laporan Gudep",
       icon: "assignment", // Nama ikon dari Google Icons
-      path: "/admin/request-laporan-gudep", // Ganti dengan path yang sesuai
+      path: "/admin/requestlaporangudep", // Ganti dengan path yang sesuai
     },
   ];
 
