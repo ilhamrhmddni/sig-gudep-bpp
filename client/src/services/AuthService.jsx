@@ -3,7 +3,7 @@
 export const login = async (email, password) => {
   try {
     const response = await fetch(
-      "https://sig-gudep-bpp-server.vercel.app//auth/login",
+      "https://sig-gudep-bpp-server.vercel.app/auth/login",
       {
         method: "POST",
         headers: {
@@ -30,7 +30,7 @@ export const logout = async () => {
   try {
     const token = localStorage.getItem("token"); // Ambil token dari local storage
     const response = await fetch(
-      "https://sig-gudep-bpp-server.vercel.app//auth/logout",
+      "https://sig-gudep-bpp-server.vercel.app/auth/logout",
       {
         method: "POST",
         headers: {
