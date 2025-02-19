@@ -4,8 +4,6 @@ const route = express.Router();
 const {
   getAllGeografis,
   getGeografis,
-  addGeografis,
-  deleteGeografis,
   updateGeografis,
 } = require("../controllers/geografis-controller.js");
 

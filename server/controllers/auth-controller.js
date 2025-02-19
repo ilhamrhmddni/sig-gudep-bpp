@@ -51,9 +51,7 @@ module.exports = {
       }
 
       // Buat token JWT
-      const token = jwt.sign({ user_id: user.id, role: user.role }, secretKey, {
-        expiresIn: "2h",
-      });
+      const token = jwt.sign({ user_id: user.id, role: user.role }, secretKey);
 
       // Tentukan URL tujuan berdasarkan peran
       const redirectUrl =
