@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginPage from "./components/pages/loginPage";
 import ProtectedRoute from "./ProtectedRoute";
+import LoginPage from "./components/pages/loginPage";
 import OperatorGugusDepan from "./components/pages/operator/OperatorGugusDepan";
 import OperatorGeografis from "./components/pages/operator/OperatorGeografis";
 import OperatorPesertaDidik from "./components/pages/operator/OperatorPesertaDidik";
