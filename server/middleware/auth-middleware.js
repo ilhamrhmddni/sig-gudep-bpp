@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
 
   const token = authHeader.split(" ")[1];
   try {
-    const decoded = jwt.verify(token, secretKey, { expiresIn: "1y" });
+    const decoded = jwt.verify(token, secretKey);
     req.user = decoded; // Pastikan ini berisi informasi pengguna
     next();
   } catch (error) {

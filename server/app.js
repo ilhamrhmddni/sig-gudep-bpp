@@ -5,14 +5,14 @@ const rootRoutes = require("./routes");
 const db = require("./models/index");
 require("dotenv").config();
 
-const allowedOrigins = ["https://sig-gudep-bpp.vercel.app/"];
+const allowedOrigins = ["https://sig-gudep-bpp.vercel.app"];
 
 app.use(express.json());
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Izinkan jika origin ada dalam daftar
+      console.log("Request dari origin:", origin);
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -21,6 +21,7 @@ app.use(
     },
   })
 );
+
 app.use(rootRoutes);
 
 const port = process.env.PORT || 3000;
