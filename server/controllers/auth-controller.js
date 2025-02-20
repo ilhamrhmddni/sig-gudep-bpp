@@ -1,7 +1,9 @@
 const { User, Gudep, Geografis } = require("../models");
 const jwt = require("jsonwebtoken");
+const fetch = require("node-fetch"); // Make sure to install node-fetch if you need to make HTTP requests
 
 const secretKey = process.env.JWT_SECRET || "secretKey";
+const apiKey = process.env.API_KEY; // Access the API key
 
 module.exports = {
   login: async (req, res) => {
@@ -14,35 +16,53 @@ module.exports = {
     }
 
     try {
-      // Cari user berdasarkan email
+      // Example of using the API key to make a request to an external service
+      const apiResponse = await fetch(
+        "https://sig-gudep-bpp-server.vercel.app/auth/login",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${apiKey}`, // Use the API key in the request
+          },
+        }
+      );
+
+      // Check if the API request was successful
+      if (!apiResponse.ok) {
+        return res
+          .status(500)
+          .json({ message: "Failed to authenticate with external API" });
+      }
+
+      // Check user credentials
       const user = await User.findOne({ where: { email } });
 
       if (!user) {
-        return res.status(404).json({ message: "User tidak ditemukan" });
+        return res.status(404).json({ message: "User  tidak ditemukan" });
       }
 
-      // Cek password langsung tanpa enkripsi
+      // Check password directly without encryption (not recommended for production)
       if (user.password !== password) {
         return res.status(401).json({ message: "Password salah" });
       }
 
-      // Cek apakah user sudah login di perangkat lain
+      // Check if user is already logged in on another device
       if (user.isLoggedIn) {
         return res
           .status(403)
           .json({ message: "Akun ini sedang digunakan di perangkat lain" });
       }
 
-      // Tandai user sebagai login
+      // Mark user as logged in
       await user.update({ isLoggedIn: true });
 
-      // Cari Gudep yang berelasi dengan user
+      // Find related Gudep
       const gudep = await Gudep.findOne({ where: { user_id: user.id } });
       if (!gudep) {
         return res.status(404).json({ message: "Gudep tidak ditemukan" });
       }
 
-      // Cari Geografis berdasarkan gudep_id
+      // Find Geografis based on gudep_id
       const geografis = await Geografis.findOne({
         where: { gudep_id: gudep.id },
       });
@@ -50,14 +70,16 @@ module.exports = {
         return res.status(404).json({ message: "Geografis tidak ditemukan" });
       }
 
-      // Buat token JWT
-      const token = jwt.sign({ user_id: user.id, role: user.role }, secretKey);
+      // Create JWT token
+      const token = jwt.sign({ user_id: user.id, role: user.role }, secretKey, {
+        expiresIn: "2h",
+      });
 
-      // Tentukan URL tujuan berdasarkan peran
+      // Determine redirect URL based on role
       const redirectUrl =
         user.role === "admin" ? "admin/kwarran" : "operator/gugusdepan";
 
-      // Kirim respons ke front-end dengan ID user, gudep, dan geografis
+      // Send response to front-end with user ID, gudep, and geografis
       res.status(200).json({
         message: "Login berhasil",
         token,
@@ -79,14 +101,14 @@ module.exports = {
   },
   logout: async (req, res) => {
     try {
-      const userId = req.user.user_id; // Ambil user_id dari token
+      const userId = req.user.user_id; // Get user_id from token
 
       const user = await User.findByPk(userId);
       if (!user) {
         return res.status(404).json({ message: "User  tidak ditemukan" });
       }
 
-      await user.update({ isLoggedIn: false }); // Perbarui status isLoggedIn
+      await user.update({ isLoggedIn: false }); // Update isLoggedIn status
       res.status(200).json({ message: "Logout berhasil" });
     } catch (error) {
       console.error("Error during logout:", error);

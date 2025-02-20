@@ -5,7 +5,10 @@ const rootRoutes = require("./routes");
 const db = require("./models/index");
 require("dotenv").config();
 
-const allowedOrigins = ["https://sig-gudep-bpp.vercel.app"];
+const allowedOrigins = [
+  "https://sig-gudep-bpp.vercel.app",
+  "http://localhost:3000",
+];
 
 app.use(express.json());
 
