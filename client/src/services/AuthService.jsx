@@ -1,17 +1,16 @@
 // src/services/AuthService.js
+import dotenv from "dotenv";
 
 export const login = async (email, password) => {
   try {
-    const response = await fetch(
-      "https://sig-gudep-bpp-server.vercel.app/auth/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      }
-    );
+    const response = await fetch("/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VITE_API_KEY}`,
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -29,16 +28,13 @@ export const login = async (email, password) => {
 export const logout = async () => {
   try {
     const token = localStorage.getItem("token"); // Ambil token dari local storage
-    const response = await fetch(
-      "https://sig-gudep-bpp-server.vercel.app/auth/logout",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Kirim token dalam header
-        },
-      }
-    );
+    const response = await fetch("/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Kirim token dalam header
+      },
+    });
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
