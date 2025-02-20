@@ -18,7 +18,7 @@ const SidebarMenu = ({
 
     if (result.message === "Logout berhasil") {
       localStorage.clear(); // Hapus semua item dari local storage
-      navigate("/"); // Arahkan ke halaman utama
+      navigate("/login"); // Arahkan ke halaman utama
     } else {
       console.error("Logout failed:", result.message); // Tampilkan pesan kesalahan jika ada
     }
