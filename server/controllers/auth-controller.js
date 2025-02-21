@@ -1,6 +1,6 @@
 const { User, Gudep, Geografis } = require("../models");
 const jwt = require("jsonwebtoken");
-const fetch = require("node-fetch"); // Make sure to install node-fetch if you need to make HTTP requests
+require("dotenv").config();
 
 const secretKey = process.env.JWT_SECRET || "secretKey";
 const apiKey = process.env.API_KEY; // Access the API key
@@ -72,7 +72,7 @@ module.exports = {
 
       // Create JWT token
       const token = jwt.sign({ user_id: user.id, role: user.role }, secretKey, {
-        expiresIn: "2h",
+        expiresIn: "7d",
       });
 
       // Determine redirect URL based on role
