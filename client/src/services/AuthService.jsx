@@ -1,5 +1,4 @@
 // src/services/AuthService.js
-import dotenv from "dotenv";
 
 export const login = async (email, password) => {
   try {
