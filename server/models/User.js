@@ -64,10 +64,22 @@ User.init(
 
 // Ketika User dibuat, otomatis buat Geografis dan Gudep
 User.afterCreate(async (user) => {
-  const gudep = await Gudep.create({ user_id: user.id });
-  await Geografis.create({ gudep_id: gudep.id });
+  console.log(`🟢 User Created Hook Triggered for: ${user.id}`);
 
-  console.log("Geografis dan Gudep berhasil dibuat secara otomatis.");
+  // Cek apakah Gudep sudah ada untuk user ini
+  const existingGudep = await Gudep.findOne({ where: { user_id: user.id } });
+
+  if (!existingGudep) {
+    const gudep = await Gudep.create({ user_id: user.id });
+    console.log("🟢 Gudep Created:", gudep.id);
+
+    await Geografis.create({ gudep_id: gudep.id });
+    console.log("🟢 Geografis Created for Gudep:", gudep.id);
+
+    console.log("✅ Geografis dan Gudep berhasil dibuat secara otomatis.");
+  } else {
+    console.log("⚠️ Gudep sudah ada, tidak membuat lagi.");
+  }
 });
 
 module.exports = User;
