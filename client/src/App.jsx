@@ -20,7 +20,6 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<TemplateUser />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/operator/gugusdepan"
@@ -111,7 +110,7 @@ const App = () => {
           }
         />
         {/* Catch-all route for 404 */}
-        <Route path="*" element={<NotFound />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </Router>
   );

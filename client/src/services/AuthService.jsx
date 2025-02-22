@@ -1,48 +1,68 @@
 // src/services/AuthService.js
 
+const API_URL =
+  "https://sig-gudep-bpp-server.vercel.app/" || "http://localhost:3000/";
+
 export const login = async (email, password) => {
   try {
-    const response = await fetch("/auth/login", {
+    const response = await fetch(`${API_URL}auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
       },
       body: JSON.stringify({ email, password }),
     });
 
+    const result = await response.json();
+    console.log("Login Response:", result); // 🛠️ Debugging response
+
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error(result.message || "Network response was not ok");
     }
 
-    const result = await response.json();
-    return result; // Assuming the result contains { success: true/false, token: 'yourToken', role: 'admin/operator', message: '...' }
+    return result; // Pastikan result mengandung token, redirectUrl, dan data user
   } catch (error) {
     console.error("Error during login:", error);
-    return { success: false, message: "Gagal terhubung ke server" };
+    return {
+      success: false,
+      message: error.message || "Gagal terhubung ke server",
+    };
   }
 };
 
 // Tambahkan fungsi logout
+
 export const logout = async () => {
+  const token = localStorage.getItem("token"); // Get token from local storage
+  console.log("Token before logout:", token); // Log token
+
+  if (!token) {
+    console.error("Token tidak ditemukan"); // Log if token is not found
+    return { success: false, message: "Token tidak ditemukan" }; // Return early
+  }
+
   try {
-    const token = localStorage.getItem("token"); // Ambil token dari local storage
-    const response = await fetch("/auth/logout", {
+    const response = await fetch(`${API_URL}auth/logout`, {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${token}`, // Send token in the header
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Kirim token dalam header
       },
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      const errorResponse = await response.json();
+      console.error("Logout error response:", errorResponse); // Log error response
+      throw new Error(errorResponse.message);
     }
 
-    const result = await response.json();
-    return result; // Mengembalikan hasil dari server
+    console.log("Logout successful");
+    return { success: true, message: "Logout berhasil" }; // Return success
   } catch (error) {
     console.error("Error during logout:", error);
-    return { success: false, message: "Gagal terhubung ke server" };
+    return {
+      success: false,
+      message: error.message || "Gagal terhubung ke server",
+    };
   }
 };

@@ -2,6 +2,7 @@ import React from "react";
 import { Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../services/AuthService";
+import Swal from "sweetalert2";
 
 const SidebarMenu = ({
   isOpen,
@@ -13,14 +14,36 @@ const SidebarMenu = ({
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    const result = await logout(); // Panggil fungsi logout
-    console.log("Logout result:", result); // Log hasil logout
+    try {
+      const result = await logout(); // Call the logout function
+      console.log("Logout result:", result); // Log the result of the logout
 
-    if (result.message === "Logout berhasil") {
-      localStorage.clear(); // Hapus semua item dari local storage
-      navigate("/login"); // Arahkan ke halaman utama
-    } else {
-      console.error("Logout failed:", result.message); // Tampilkan pesan kesalahan jika ada
+      if (result.success) {
+        // Check if the logout was successful
+        localStorage.clear(); // Clear all items from local storage
+        navigate("/login"); // Redirect to the login page
+
+        // Optionally, show a success message
+        Swal.fire({
+          icon: "success",
+          title: "Logout Berhasil",
+          text: "Anda telah berhasil logout.",
+        });
+      } else {
+        console.error("Logout failed:", result.message); // Log the error message
+        Swal.fire({
+          icon: "error",
+          title: "Logout Gagal",
+          text: result.message || "Terjadi kesalahan saat logout.",
+        });
+      }
+    } catch (error) {
+      console.error("Error during logout:", error); // Log any unexpected errors
+      Swal.fire({
+        icon: "error",
+        title: "Terjadi Kesalahan",
+        text: "Terjadi kesalahan saat logout: " + error.message,
+      });
     }
   };
 
