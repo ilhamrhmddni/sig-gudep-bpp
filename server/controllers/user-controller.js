@@ -4,9 +4,7 @@ module.exports = {
   // Ambil semua user
   getAllUser: async (req, res) => {
     try {
-      const allUser = await User.findAll({
-        attributes: { exclude: ["password"] }, // Hindari mengirim password
-      });
+      const allUser = await User.findAll();
 
       return res.status(200).json({
         message: "Data users berhasil didapatkan",
