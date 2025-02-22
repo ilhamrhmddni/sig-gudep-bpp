@@ -34,10 +34,12 @@ module.exports = {
         });
       }
 
-      // Pastikan `photo_path` memiliki URL lengkap
-      const fullPhotoPath = user.photo_path
-        ? `${req.protocol}://${req.get("host")}/${user.photo_path}`
-        : `${req.protocol}://${req.get("host")}/default-profile.png`;
+      let fullPhotoPath = user.photo_path;
+
+      // Pastikan `photo_path` tidak ditambahkan API_URL jika sudah merupakan URL
+      if (fullPhotoPath && !fullPhotoPath.startsWith("http")) {
+        fullPhotoPath = `${req.protocol}://${req.get("host")}/${fullPhotoPath}`;
+      }
 
       return res.status(200).json({
         message: "Data user berhasil didapatkan",
