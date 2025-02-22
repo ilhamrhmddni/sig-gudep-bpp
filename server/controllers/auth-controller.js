@@ -1,9 +1,5 @@
 const { User, Gudep, Geografis } = require("../models");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
-
-const secretKey = process.env.JWT_SECRET || "secretKey";
-const apiKey = process.env.API_KEY; // Access the API key
 
 module.exports = {
   login: async (req, res) => {
@@ -16,24 +12,6 @@ module.exports = {
     }
 
     try {
-      // Example of using the API key to make a request to an external service
-      const apiResponse = await fetch(
-        "https://sig-gudep-bpp-server.vercel.app/auth/login",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${apiKey}`, // Use the API key in the request
-          },
-        }
-      );
-
-      // Check if the API request was successful
-      if (!apiResponse.ok) {
-        return res
-          .status(500)
-          .json({ message: "Failed to authenticate with external API" });
-      }
-
       // Check user credentials
       const user = await User.findOne({ where: { email } });
 
@@ -70,16 +48,16 @@ module.exports = {
         return res.status(404).json({ message: "Geografis tidak ditemukan" });
       }
 
-      // Create JWT token
-      const token = jwt.sign({ user_id: user.id, role: user.role }, secretKey, {
-        expiresIn: "7d",
-      });
+      // Create JWT token without a secret key
+      const token = jwt.sign(
+        { user_id: user.id, role: user.role },
+        "kwarcabbpn"
+      );
 
       // Determine redirect URL based on role
       const redirectUrl =
         user.role === "admin" ? "admin/kwarran" : "operator/gugusdepan";
 
-      // Send response to front-end with user ID, gudep, and geografis
       res.status(200).json({
         message: "Login berhasil",
         token,
@@ -101,7 +79,13 @@ module.exports = {
   },
   logout: async (req, res) => {
     try {
-      const userId = req.user.user_id; // Get user_id from token
+      const token = req.headers.authorization?.split(" ")[1]; // Get token from the Authorization header
+      if (!token) {
+        return res.status(401).json({ message: "Token tidak ditemukan" }); // Return 401 if token is not found
+      }
+
+      const decoded = jwt.verify(token, "kwarcabbpn"); // Replace with your actual secret key
+      const userId = decoded.user_id;
 
       const user = await User.findByPk(userId);
       if (!user) {
@@ -112,7 +96,7 @@ module.exports = {
       res.status(200).json({ message: "Logout berhasil" });
     } catch (error) {
       console.error("Error during logout:", error);
-      res.status(500).json({ message: "Gagal logout", error: error.message });
+      return res.status(401).json({ message: "Token tidak valid" }); // Return 401 for invalid token
     }
   },
 };
