@@ -1,5 +1,11 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useMemo } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import jwtDecode from "jwt-decode";
 import ProtectedRoute from "./ProtectedRoute";
 import LoginPage from "./components/pages/LoginPage";
 import OperatorGugusDepan from "./components/pages/operator/OperatorGugusDepan";
@@ -16,14 +22,35 @@ import AdminOperator from "./components/pages/admin/AdminOperator";
 import AdminRequestLaporanGudep from "./components/pages/admin/AdminRequestLaporanGudep";
 
 const App = () => {
+  const token = localStorage.getItem("token");
+
+  // Gunakan useMemo untuk mencegah decoding ulang setiap render
+  const roleUser = useMemo(() => {
+    if (token) {
+      try {
+        return jwtDecode(token).role;
+      } catch (error) {
+        console.error("Invalid token");
+        return "";
+      }
+    }
+    return "";
+  }, [token]);
+
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+
+        {/* Operator Routes */}
         <Route
           path="/operator/gugusdepan"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute
+              token={token}
+              role={roleUser}
+              allowedRole="operator"
+            >
               <OperatorGugusDepan />
             </ProtectedRoute>
           }
@@ -31,7 +58,11 @@ const App = () => {
         <Route
           path="/operator/geografis"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute
+              token={token}
+              role={roleUser}
+              allowedRole="operator"
+            >
               <OperatorGeografis />
             </ProtectedRoute>
           }
@@ -39,7 +70,11 @@ const App = () => {
         <Route
           path="/operator/event"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute
+              token={token}
+              role={roleUser}
+              allowedRole="operator"
+            >
               <OperatorEvent />
             </ProtectedRoute>
           }
@@ -47,15 +82,21 @@ const App = () => {
         <Route
           path="/operator/pesertadidik"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute
+              token={token}
+              role={roleUser}
+              allowedRole="operator"
+            >
               <OperatorPesertaDidik />
             </ProtectedRoute>
           }
         />
+
+        {/* Admin Routes */}
         <Route
           path="/admin/kwarran"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
               <AdminKwarran />
             </ProtectedRoute>
           }
@@ -63,7 +104,7 @@ const App = () => {
         <Route
           path="/admin/operator"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
               <AdminOperator />
             </ProtectedRoute>
           }
@@ -71,7 +112,7 @@ const App = () => {
         <Route
           path="/admin/pesertadidik"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
               <AdminPesertaDidik />
             </ProtectedRoute>
           }
@@ -79,7 +120,7 @@ const App = () => {
         <Route
           path="/admin/gugusdepan"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
               <AdminGugusDepan />
             </ProtectedRoute>
           }
@@ -87,7 +128,7 @@ const App = () => {
         <Route
           path="/admin/geografis"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
               <AdminGeografis />
             </ProtectedRoute>
           }
@@ -95,7 +136,7 @@ const App = () => {
         <Route
           path="/admin/event"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
               <AdminEvent />
             </ProtectedRoute>
           }
@@ -103,13 +144,14 @@ const App = () => {
         <Route
           path="/admin/requestlaporangudep"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
               <AdminRequestLaporanGudep />
             </ProtectedRoute>
           }
         />
+
         {/* Catch-all route for 404 */}
-        <Route path="/" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
