@@ -40,7 +40,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/authlogin" element={<LoginPage />} />
 
         {/* Operator Routes */}
         <Route
