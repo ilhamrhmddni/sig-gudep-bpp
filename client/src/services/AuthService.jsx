@@ -1,7 +1,6 @@
 // src/services/AuthService.js
 
-const API_URL =
-  "https://sig-gudep-bpp-server.vercel.app/" || "http://localhost:3000/";
+const API_URL = "https://sig-gudep-bpp-server.vercel.app/";
 
 export const login = async (email, password) => {
   try {
