@@ -1,10 +1,5 @@
 import React, { useMemo } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import ProtectedRoute from "./ProtectedRoute";
 import LoginPage from "./components/pages/LoginPage";
