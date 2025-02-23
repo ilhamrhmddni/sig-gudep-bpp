@@ -13,6 +13,7 @@ db.Geografis = require("./Geografis");
 db.PesertaDidik = require("./PesertaDidik");
 db.Event = require("./Event");
 db.EventGudep = require("./EventGudep");
+db.Laporan = require("./Laporan");
 
 // ======================================================================
 // ✅ Relasi Gudep dengan User & Kwarran (Many-to-One)

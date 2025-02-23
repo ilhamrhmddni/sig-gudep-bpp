@@ -1,15 +1,23 @@
+const { data } = require("react-router-dom");
 const { Laporan } = require("../models");
 
 module.exports = {
   // Ambil semua laporan
   getAllLaporan: async (req, res) => {
     try {
+      console.log("📡 Mengambil semua laporan dari database...");
+
       const allLaporan = await Laporan.findAll();
+
+      console.log("✅ Data laporan berhasil diambil:", allLaporan);
+
       return res.status(200).json({
         message: "Data laporan berhasil didapatkan",
         data: allLaporan,
       });
     } catch (error) {
+      console.error("❌ Error mengambil laporan:", error);
+
       return res.status(500).json({
         message: "Terjadi kesalahan server",
         error: error.message,
