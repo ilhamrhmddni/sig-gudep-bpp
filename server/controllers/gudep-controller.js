@@ -101,4 +101,50 @@ module.exports = {
       });
     }
   },
+
+  // ✅ Tambah Gudep baru
+  addGudep: async (req, res) => {
+    const {
+      user_id,
+      kwarran_id,
+      geografis_id,
+      no_gudep,
+      tingkatan,
+      mabigus,
+      pembina,
+      pelatih,
+      email,
+      tahun_update,
+      jumlah_putra,
+      jumlah_putri,
+    } = req.body;
+
+    try {
+      // Buat Gudep baru
+      const newGudep = await Gudep.create({
+        user_id,
+        kwarran_id,
+        geografis_id,
+        no_gudep,
+        tingkatan,
+        mabigus,
+        pembina,
+        pelatih,
+        email,
+        tahun_update,
+        jumlah_putra,
+        jumlah_putri,
+      });
+
+      return res.status(201).json({
+        message: "Data Gudep berhasil ditambahkan",
+        data: newGudep,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Terjadi kesalahan server",
+        error: error.message,
+      });
+    }
+  },
 };
