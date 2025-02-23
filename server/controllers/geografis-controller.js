@@ -8,7 +8,8 @@ module.exports = {
         include: [
           {
             model: Gudep,
-            attributes: ["id", "no_gudep"],
+            attributes: ["id", "no_gudep", "kwarran_id"],
+            required: false,
           },
         ],
       });

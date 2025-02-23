@@ -14,7 +14,11 @@ const Event = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    tanggal: {
+    tanggal_mulai: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    tanggal_selesai: {
       type: DataTypes.DATE,
       allowNull: false,
     },

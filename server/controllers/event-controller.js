@@ -1,13 +1,25 @@
 const { Event } = require("../models");
 
 module.exports = {
-  // Operator
-
-  // Tambah data event
   addEvent: async (req, res) => {
-    const { nama, tanggal, tempat, tingkat, penyelenggara } = req.body;
+    const {
+      nama,
+      tanggal_mulai,
+      tanggal_selesai,
+      tempat,
+      tingkat,
+      penyelenggara,
+    } = req.body;
 
-    if (!nama || !tanggal || !tempat || !tingkat || !penyelenggara) {
+    if (
+      !nama ||
+      !tanggal ||
+      !tempat ||
+      !tanggal_mulai ||
+      !tanggal_selesai ||
+      !tingkat ||
+      !penyelenggara
+    ) {
       return res.status(400).json({
         message: "Semua field wajib diisi",
       });
@@ -16,7 +28,8 @@ module.exports = {
     try {
       const newEvent = await Event.create({
         nama,
-        tanggal,
+        tanggal_mulai,
+        tanggal_selesai,
         tempat,
         tingkat,
         penyelenggara,
@@ -56,7 +69,14 @@ module.exports = {
   // Edit data event berdasarkan ID
   updateEvent: async (req, res) => {
     const { id } = req.params;
-    const { nama, tanggal, tempat, tingkat, penyelenggara } = req.body;
+    const {
+      nama,
+      tanggal_mulai,
+      tanggal_selesai,
+      tempat,
+      tingkat,
+      penyelenggara,
+    } = req.body;
 
     try {
       const event = await Event.findByPk(id);
@@ -65,7 +85,14 @@ module.exports = {
         return res.status(404).json({ message: "Data event tidak ditemukan" });
       }
 
-      if (!nama || !tanggal || !tempat || !tingkat || !penyelenggara) {
+      if (
+        !nama ||
+        !tanggal_mulai ||
+        !tanggal_selesai ||
+        !tempat ||
+        !tingkat ||
+        !penyelenggara
+      ) {
         return res.status(400).json({
           message: "Semua field wajib diisi",
         });
@@ -73,7 +100,8 @@ module.exports = {
 
       await event.update({
         nama,
-        tanggal,
+        tanggal_mulai,
+        tanggal_selesai,
         tempat,
         tingkat,
         penyelenggara,
