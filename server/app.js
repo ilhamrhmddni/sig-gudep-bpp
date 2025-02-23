@@ -20,7 +20,7 @@ db.sequelize
   .then(() => console.log("✅ Database connected!"))
   .catch((err) => console.error("❌ Database connection error:", err));
 
-sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: true }).then(() => {
   console.log("✅ Semua tabel telah dibuat ulang.");
 });
 
