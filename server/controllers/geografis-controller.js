@@ -4,7 +4,15 @@ module.exports = {
   // Ambil semua data geografis
   getAllGeografis: async (req, res) => {
     try {
-      const allGeografis = await Geografis.findAll();
+      const allGeografis = await Geografis.findAll({
+        include: [
+          {
+            model: Gudep,
+            as: "gudep",
+            attributes: ["id", "no_gudep"], // Pastikan mengambil `no_gudep`
+          },
+        ],
+      });
       return res.status(200).json({
         message: "Data geografis berhasil didapatkan",
         data: allGeografis,
