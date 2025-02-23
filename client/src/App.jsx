@@ -17,7 +17,7 @@ import AdminOperator from "./components/pages/admin/AdminOperator";
 import AdminRequestLaporanGudep from "./components/pages/admin/AdminRequestLaporanGudep";
 import AdminKwarranForm from "./components/pages/admin/AdminKwarranForm";
 import AdminOperatorForm from "./components/pages/admin/AdminOperatorForm";
-import AdminGudepForm from "./components/pages/admin/AdminGudepForm";
+import AdminGudepForm from "./components/pages/operator/OperatorGudepForm";
 
 const App = () => {
   const token = localStorage.getItem("token");
@@ -165,7 +165,7 @@ const App = () => {
           path="/admin/gudep/edit/:id"
           element={
             <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
-              <AdminGugusDepan isEdit={true} />
+              <AdminGudepForm isEdit={true} />
             </ProtectedRoute>
           }
         />

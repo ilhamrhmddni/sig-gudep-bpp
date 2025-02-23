@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // For navigation
 import AdminTemplate from "../../templates/AdminTemplate";
-import Table from "../../moleculs/Table";
+import TableCRUD from "../../moleculs/TableCRUD";
 import SearchInput from "../../atoms/SearchInput";
 import AddButton from "../../atoms/AddButton";
 import { deleteKwarran, fetchKwarran } from "../../../services/KwarranService"; // Assuming the service file is set up
@@ -100,7 +100,7 @@ const AdminKwarran = () => {
           {filteredData.length === 0 && !loading ? (
             <p className="text-center mt-4">Data tidak ditemukan</p>
           ) : (
-            <Table
+            <TableCRUD
               headers={headers}
               data={filteredData}
               onEdit={handleEdit}

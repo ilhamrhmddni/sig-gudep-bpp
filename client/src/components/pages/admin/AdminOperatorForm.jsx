@@ -175,20 +175,23 @@ const AdminOperatorForm = ({ isEdit }) => {
             </div>
             <div className="flex flex-col">
               <label className="mb-1 font-semibold">Old Password</label>
-              <input
-                type={showOldPassword ? "text" : "password"}
-                value={oldPassword || ""}
-                readOnly
-                className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#9500FF]"
-              />
-              <button
-                type="button"
-                onClick={() => setShowOldPassword(!showOldPassword)}
-                className="mt-2 text-sm text-blue-600"
-              >
-                {showOldPassword ? "Hide" : "Show"} Old Password
-              </button>
+              <div className="flex flex-row ">
+                <input
+                  type={showOldPassword ? "text" : "password"}
+                  value={oldPassword || ""}
+                  readOnly
+                  className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#9500FF] w-full"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowOldPassword(!showOldPassword)}
+                  className="text-sm text-[#9500FF]"
+                >
+                  {showOldPassword ? "Hide" : "Show"} Old Password
+                </button>
+              </div>
             </div>
+            <br />
             <div className="flex flex-col">
               <label className="mb-1 font-semibold">New Password</label>
               <input

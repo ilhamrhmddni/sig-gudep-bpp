@@ -1,6 +1,6 @@
 import React from "react";
 
-const Table = ({ headers, data, onEdit, onDelete }) => {
+const TableCRUD = ({ headers, data, onEdit, onDelete }) => {
   return (
     <table className="min-w-full table-auto mt-4 ">
       <thead>
@@ -55,4 +55,4 @@ const Table = ({ headers, data, onEdit, onDelete }) => {
   );
 };
 
-export default Table;
+export default TableCRUD;
