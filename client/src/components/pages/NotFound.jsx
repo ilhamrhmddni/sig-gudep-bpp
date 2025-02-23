@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-const NotFound = () => {
-  const navigate = useNavigate(); // Inisialisasi useNavigate
+const NotFound = ({ role }) => {
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  useEffect(() => {
+    // Check if the role is not recognized
+    if (!role) {
+      navigate("/404"); // Redirect to /dashboard if no role is provided
+    }
+  }, [role, navigate]);
 
   const handleBack = () => {
-    navigate(-1); // Kembali ke halaman sebelumnya
+    // Navigate based on the user's role
+    if (role === "admin") {
+      navigate("/admin/kwarran"); // Redirect admin to the kwarran page
+    } else if (role === "operator") {
+      navigate("/operator/gugusdepan"); // Redirect operator to the gugusdepan page
+    } else {
+      navigate("/404"); // Default redirect if role is not recognized
+    }
   };
 
   return (

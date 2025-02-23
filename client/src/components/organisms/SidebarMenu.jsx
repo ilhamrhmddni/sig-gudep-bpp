@@ -64,43 +64,47 @@ const SidebarMenu = ({
         ></div>
       </div>
       {/* Tombol Toggle di Dalam Sidebar */}
-      <button
-        onClick={toggleMenu}
-        className={`absolute top-6 right-4 p-2 text-white rounded z-50 transition-all duration-300`}
-      >
-        {isOpen ? (
-          <X size={24} className="font-bold" />
-        ) : (
-          <Menu size={24} className="font-bold" />
-        )}
-      </button>
-      {/* Daftar menu */}
-      <ul className="mt-10 space-y-3 text-md font-bold">
-        {menuItems.map((item, index) => (
-          <li
-            key={index}
-            className={`flex justify-between items-center cursor-pointer text-[#9500FF] hover:bg-white hover:text-[#9500FF] rounded-full p-2 pl-4 ${
-              currentPath === item.path
-                ? "bg-white text-[#9500FF]"
-                : "text-white"
-            }`} // Menambahkan kelas untuk item aktif
-            onClick={() => navigate(item.path)}
-          >
-            <span className="flex-grow">{item.name}</span>
-            {/* Menampilkan ikon di sebelah kanan nama menu */}
-            <span className="material-icons">{item.icon}</span>
-          </li>
-        ))}
-      </ul>
+      <div>
+        <button
+          onClick={toggleMenu}
+          className={`absolute top-6 right-4 p-2 text-white rounded z-50 transition-all duration-300`}
+        >
+          {isOpen ? (
+            <X size={24} className="font-bold" />
+          ) : (
+            <Menu size={24} className="font-bold" />
+          )}
+        </button>
+        {/* Daftar menu */}
+        <ul className="mt-10 space-y-3 text-md font-bold">
+          {menuItems.map((item, index) => (
+            <li
+              key={index}
+              className={`flex justify-between items-center cursor-pointer text-[#9500FF] hover:bg-white hover:text-[#9500FF] rounded-full p-2 pl-4 ${
+                currentPath === item.path
+                  ? "bg-white text-[#9500FF]"
+                  : "text-white"
+              }`} // Menambahkan kelas untuk item aktif
+              onClick={() => navigate(item.path)}
+            >
+              <span className="flex-grow">{item.name}</span>
+              {/* Menampilkan ikon di sebelah kanan nama menu */}
+              <span className="material-icons">{item.icon}</span>
+            </li>
+          ))}
+        </ul>
+      </div>{" "}
       {/* Menampilkan ikon di kanan */}
-      <div className="mt-10">{rightIcon}</div>
-      {/* Menampilkan tombol logout di bawah ikon */}
-      <button
-        onClick={handleLogout}
-        className="mt-10 w-full p-2 text-[#9500FF] font-bold bg-white rounded hover:bg-red-600 transition duration-300"
-      >
-        Logout
-      </button>
+      <div className="md:mt-48 lg:mt-54 xl:mt-96 flex-grow">{rightIcon}</div>
+      {/* Tombol Logout di bagian bawah */}
+      <div className="flex flex-col items-center mb-4">
+        <button
+          onClick={handleLogout}
+          className="w-[50%] p-1 text-[#9500FF] font-bold bg-white rounded hover:bg-[#9500FF] hover:text-white hover:border-white border-1 transition duration-300"
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SidebarMenu from "../moleculs/SidebarMenu"; // Mengimpor Sidebar
+import SidebarMenu from "../organisms/SidebarMenu"; // Mengimpor Sidebar
 
 const OperatorTemplate = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);

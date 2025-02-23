@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import SidebarMenu from "../moleculs/SidebarMenu"; // Mengimpor Sidebar
+import SidebarMenu from "../organisms/SidebarMenu"; // Sidebar
+import Header from "../organisms/Header"; // Import Header
 
 const AdminTemplate = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,40 +11,16 @@ const AdminTemplate = ({ children }) => {
 
   // Array menu dengan ikon
   const menuItems = [
-    {
-      name: "Kwarran",
-      icon: "splitscreen", // Nama ikon dari Google Icons
-      path: "/admin/kwarran", // Ganti dengan path yang sesuai
-    },
-    {
-      name: "Operator",
-      icon: "person", // Nama ikon dari Google Icons
-      path: "/admin/operator", // Ganti dengan path yang sesuai
-    },
-    {
-      name: "Gugus Depan",
-      icon: "school", // Nama ikon dari Google Icons
-      path: "/admin/gugusdepan", // Ganti dengan path yang sesuai
-    },
-    {
-      name: "Geografis",
-      icon: "map", // Nama ikon dari Google Icons
-      path: "/admin/geografis", // Ganti dengan path yang sesuai
-    },
-    {
-      name: "Event",
-      icon: "event", // Nama ikon dari Google Icons
-      path: "/admin/event", // Ganti dengan path yang sesuai
-    },
-    {
-      name: "Peserta Didik",
-      icon: "people", // Nama ikon dari Google Icons
-      path: "/admin/pesertadidik", // Ganti dengan path yang sesuai
-    },
+    { name: "Kwarran", icon: "splitscreen", path: "/admin/kwarran" },
+    { name: "Operator", icon: "person", path: "/admin/operator" },
+    { name: "Gugus Depan", icon: "school", path: "/admin/gugusdepan" },
+    { name: "Geografis", icon: "map", path: "/admin/geografis" },
+    { name: "Event", icon: "event", path: "/admin/event" },
+    { name: "Peserta Didik", icon: "people", path: "/admin/pesertadidik" },
     {
       name: "Request Laporan Gudep",
-      icon: "assignment", // Nama ikon dari Google Icons
-      path: "/admin/requestlaporangudep", // Ganti dengan path yang sesuai
+      icon: "assignment",
+      path: "/admin/requestlaporangudep",
     },
   ];
 
@@ -59,15 +36,16 @@ const AdminTemplate = ({ children }) => {
         menuItems={menuItems}
         currentPath={currentPath}
       />
+
       {/* Konten utama */}
       <div
         className={`transition-all duration-300 w-full ${
           isOpen ? "ml-[210px]" : "ml-0"
         }`}
-        style={{
-          transition: "margin-left 0.3s ease",
-        }}
       >
+        {/* Header */}
+        <Header title="Dashboard Admin" />
+
         {/* Konten halaman utama */}
         <div className="p-4">{children}</div>
       </div>

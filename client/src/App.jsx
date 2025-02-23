@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import ProtectedRoute from "./ProtectedRoute";
 import LoginPage from "./components/pages/LoginPage";
 import OperatorGugusDepan from "./components/pages/operator/OperatorGugusDepan";
@@ -15,27 +15,28 @@ import AdminPesertaDidik from "./components/pages/admin/AdminPesertaDidik";
 import AdminEvent from "./components/pages/admin/AdminEvent";
 import AdminOperator from "./components/pages/admin/AdminOperator";
 import AdminRequestLaporanGudep from "./components/pages/admin/AdminRequestLaporanGudep";
+import AdminKwarranForm from "./components/pages/admin/AdminKwarranForm";
+import AdminOperatorForm from "./components/pages/admin/AdminOperatorForm";
+import AdminGudepForm from "./components/pages/admin/AdminGudepForm";
 
 const App = () => {
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   // Gunakan useMemo untuk mencegah decoding ulang setiap render
-  const roleUser = useMemo(() => {
-    if (token) {
-      try {
-        return jwtDecode(token).role;
-      } catch (error) {
-        console.error("Invalid token");
-        return "";
-      }
+  let roleUser = "";
+  if (token) {
+    try {
+      roleUser = jwtDecode(token).role; // Decode the token to get the role
+    } catch (error) {
+      console.error("Invalid token");
     }
-    return "";
-  }, [token]);
+  }
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
 
         {/* Operator Routes */}
         <Route
@@ -89,6 +90,22 @@ const App = () => {
 
         {/* Admin Routes */}
         <Route
+          path="/admin/kwarran/add"
+          element={
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
+              <AdminKwarranForm isEdit={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/kwarran/edit/:id"
+          element={
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
+              <AdminKwarranForm isEdit={true} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/admin/kwarran"
           element={
             <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
@@ -105,6 +122,22 @@ const App = () => {
           }
         />
         <Route
+          path="/admin/operator/add"
+          element={
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
+              <AdminOperatorForm isEdit={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/operator/edit/:id"
+          element={
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
+              <AdminOperatorForm isEdit={true} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/admin/pesertadidik"
           element={
             <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
@@ -117,6 +150,22 @@ const App = () => {
           element={
             <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
               <AdminGugusDepan />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/gudep/add"
+          element={
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
+              <AdminGudepForm isEdit={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/gudep/edit/:id"
+          element={
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
+              <AdminGugusDepan isEdit={true} />
             </ProtectedRoute>
           }
         />
@@ -146,7 +195,7 @@ const App = () => {
         />
 
         {/* Catch-all route for 404 */}
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound role={roleUser} />} />
       </Routes>
     </Router>
   );

@@ -19,9 +19,9 @@ const LoginPage = () => {
       // Pastikan ada token dan role
       setTimeout(() => {
         if (role === "admin") {
-          navigate("/admin/kwarran", { replace: true });
+          navigate("/admin/kwarran", { replace: false });
         } else if (role === "operator") {
-          navigate("/operator/gugusdepan", { replace: true });
+          navigate("/operator/gugusdepan", { replace: false });
         }
       }, 100);
     }
