@@ -20,10 +20,6 @@ db.sequelize
   .then(() => console.log("✅ Database connected!"))
   .catch((err) => console.error("❌ Database connection error:", err));
 
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("✅ Semua tabel telah dibuat ulang.");
-});
-
 app.listen(port, () => {
   console.log(`🚀 Server is running on port ${port}`);
 });
