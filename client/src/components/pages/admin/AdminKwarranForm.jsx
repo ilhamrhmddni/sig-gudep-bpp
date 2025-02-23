@@ -25,7 +25,6 @@ const KwarranForm = ({ isEdit }) => {
         try {
           const result = await fetchKwarranId(id); // Pastikan ini memanggil fungsi yang benar
           const { data } = result; // Pastikan data diambil dengan benar
-          console.log(result); // Debugging: lihat hasil yang diterima
           setKode(data.kode);
           setNama(data.nama);
           setKetuaKwarran(data.ketua_kwarran);
@@ -65,11 +64,9 @@ const KwarranForm = ({ isEdit }) => {
         if (isEdit && id) {
           // Update the Kwarran data
           await editKwarran(id, newData);
-          console.log("Updated Kwarran data:", newData);
         } else {
           // Create a new Kwarran
           await createKwarran(newData);
-          console.log("New Kwarran data:", newData);
         }
 
         // Redirect after submit

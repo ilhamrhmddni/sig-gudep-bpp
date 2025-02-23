@@ -14,7 +14,6 @@ const AdminGugusdepan = () => {
   const [selectedTingkatan, setSelectedTingkatan] = useState(""); // State for selected Tingkatan
   const [loading, setLoading] = useState(true); // For loading state
   const [error, setError] = useState(null); // To handle errors
-  const [showDetails, setShowDetails] = useState(false); // Toggle for showing details
 
   // Fetching Gugusdepan data from API
   useEffect(() => {
@@ -22,7 +21,6 @@ const AdminGugusdepan = () => {
       try {
         setLoading(true);
         const result = await fetchGugusdepan();
-        console.log("API Response:", result); // Debugging: see the API response
 
         setData(Array.isArray(result.data) ? result.data : []); // Ensure `data` is always an array
         setError(null);
@@ -87,9 +85,16 @@ const AdminGugusdepan = () => {
   const filteredData = data
     .filter((item) => {
       const matchesSearch =
-        (item.nama ?? "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (item.ketua ?? "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (item.email ?? "").toLowerCase().includes(searchQuery.toLowerCase());
+        (item.no_gudep ?? "")
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        (item.mabigus ?? "")
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        (item.pembina ?? "")
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        (item.pelatih ?? "").toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesKwarran = selectedKwarran
         ? item.kwarran_id === selectedKwarran
@@ -99,7 +104,9 @@ const AdminGugusdepan = () => {
         ? item.tingkatan === selectedTingkatan
         : true;
 
-      return matchesSearch && matchesKwarran && matchesTingkatan;
+      const isNotAdmin = item.User?.role !== "admin"; // Mengakses role dari objek User
+
+      return matchesSearch && matchesKwarran && matchesTingkatan && isNotAdmin;
     })
     .map((item) => ({
       ...item,
@@ -124,7 +131,7 @@ const AdminGugusdepan = () => {
               className="m-2 p-2 border-2 border-white rounded-md text-white font-bold "
             >
               <option value="" className="text-[#9500FF] font-bold">
-                Semua Kwarran
+                Kwarran
               </option>
               {kwarranList.map((kwarran) => (
                 <option
@@ -142,7 +149,7 @@ const AdminGugusdepan = () => {
               className="m-2 p-2 border-2 border-white rounded-md text-white font-bold"
             >
               <option value="" className="text-[#9500FF] font-bold">
-                Semua Tingkatan
+                Tingkatan
               </option>
               <option value="Siaga" className="text-[#9500FF] font-bold">
                 Siaga
@@ -169,13 +176,7 @@ const AdminGugusdepan = () => {
           {filteredData.length === 0 && !loading ? (
             <p className="text-center mt-4">Data tidak ditemukan</p>
           ) : (
-            <TableR
-              headers={headers}
-              data={filteredData}
-              hiddenColumns={
-                showDetails ? [] : ["mabigus", "pembina", "pelatih"]
-              } // Menyembunyikan kolom jika detail tidak ditampilkan
-            />
+            <TableR headers={headers} data={filteredData} />
           )}
         </div>
       </div>

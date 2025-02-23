@@ -1,25 +1,23 @@
-// src/pages/AdminEvent.js
+// src/pages/AdminLaporan.jsx
 import React, { useState, useEffect } from "react";
 import AdminTemplate from "../../templates/AdminTemplate";
 import TableR from "../../moleculs/TableR";
 import SearchInput from "../../atoms/SearchInput";
-import { fetchEvents } from "../../../services/EventService"; // Menggunakan service yang baru
-import { fetchKwarran } from "../../../services/KwarranService"; // Menggunakan service yang baru
+import { fetchLaporan } from "../../../services/LaporanService"; // Menggunakan service untuk laporan
 
-const AdminEvent = () => {
+const AdminLaporanGudep = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
-  const [kwarranList, setKwarranList] = useState([]);
-  const [selectedKwarran, setSelectedKwarran] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(""); // State untuk status
 
-  // Fetching Event data from API
+  // Fetching Laporan data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await fetchEvents();
+        const result = await fetchLaporan();
         setData(Array.isArray(result.data) ? result.data : []);
         setError(null);
       } catch (error) {
@@ -33,43 +31,32 @@ const AdminEvent = () => {
     fetchData();
   }, []);
 
-  // Fetching Kwarran data for filter options
-  useEffect(() => {
-    const fetchKwarranData = async () => {
-      try {
-        const result = await fetchKwarran();
-        setKwarranList(result.data || []);
-      } catch (error) {
-        console.error("Error fetching Kwarran data:", error);
-      }
-    };
-
-    fetchKwarranData();
-  }, []);
-
   const headers = [
-    { key: "nama", label: "Nama Event" },
-    { key: "tanggal_mulai", label: "Tanggal Mulai" },
-    { key: "tanggal_selesai", label: "Tanggal Selesai" },
-    { key: "tempat", label: "Tempat" },
-    { key: "tingkat", label: "Tingkat" },
-    { key: "penyelenggara", label: "Penyelenggara" },
+    { key: "nama", label: "Nama" },
+    { key: "asal", label: "Asal" },
+    { key: "no_hp", label: "No. HP" },
+    { key: "email", label: "Email" },
+    { key: "status", label: "Status" },
   ];
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleKwarranChange = (e) => {
-    setSelectedKwarran(e.target.value);
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
   };
 
   const filteredData = data.filter((item) => {
     const matchesSearch =
       (item.nama ?? "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (item.tempat ?? "").toLowerCase().includes(searchQuery.toLowerCase());
+      (item.asal ?? "").toLowerCase().includes(searchQuery.toLowerCase());
 
-    return matchesSearch;
+    const matchesStatus = selectedStatus
+      ? item.status === selectedStatus
+      : true;
+
+    return matchesSearch && matchesStatus;
   });
 
   return (
@@ -81,26 +68,23 @@ const AdminEvent = () => {
               className="items-center text-2xl font-bold px-12 m-auto flex justify-center text-white"
               style={{ whiteSpace: "nowrap" }}
             >
-              Data Event
+              Data Laporan
             </span>
             <SearchInput value={searchQuery} onChange={handleSearchChange} />
             <select
-              value={selectedKwarran}
-              onChange={handleKwarranChange}
+              value={selectedStatus}
+              onChange={handleStatusChange}
               className="m-2 p-2 border-2 border-white rounded-md text-white font-bold"
             >
               <option value="" className="text-[#9500FF] font-bold">
-                Kwarran
+                Semua Status
               </option>
-              {kwarranList.map((kwarran) => (
-                <option
-                  key={kwarran.id}
-                  value={kwarran.id}
-                  className="text-[#9500FF] font-bold"
-                >
-                  {kwarran.nama}
-                </option>
-              ))}
+              <option value="diproses" className="text-[#9500FF] font-bold">
+                Diproses
+              </option>
+              <option value="selesai" className="text-[#9500FF] font-bold">
+                Selesai
+              </option>
             </select>
           </div>
 
@@ -117,4 +101,4 @@ const AdminEvent = () => {
   );
 };
 
-export default AdminEvent;
+export default AdminLaporanGudep;

@@ -11,8 +11,6 @@ const AdminOperator = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true); // For loading state
   const [error, setError] = useState(null); // To handle errors
-  const [password, setPassword] = useState(""); // State for new password
-  const [selectedUserId, setSelectedUserId] = useState(null); // State for selected user ID
   const navigate = useNavigate(); // Hook for navigating to another route
 
   // Fetching operator data from API
@@ -55,26 +53,8 @@ const AdminOperator = () => {
     try {
       await deleteUser(id); // Call the delete function from service
       setData(data.filter((item) => item.id !== id)); // Update local state after delete
-      console.log("Item deleted successfully");
     } catch (error) {
       console.error("Error deleting item", error);
-    }
-  };
-
-  const handlePasswordChange = async (id) => {
-    if (!password) {
-      alert("Please enter a new password.");
-      return;
-    }
-
-    try {
-      // Call your API to update the password for the user
-      await updateUserPassword(id, { password }); // Implement this function in your service
-      alert("Password updated successfully!");
-      setPassword(""); // Clear the password field
-    } catch (error) {
-      console.error("Error updating password:", error);
-      alert("Failed to update password.");
     }
   };
 

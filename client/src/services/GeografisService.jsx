@@ -13,6 +13,7 @@ export const fetchGeografis = async () => {
     }
 
     const data = await response.json(); // Mengambil data dalam bentuk JSON
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching Geografis:", error);

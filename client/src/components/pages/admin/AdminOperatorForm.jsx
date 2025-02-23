@@ -29,7 +29,6 @@ const AdminOperatorForm = ({ isEdit }) => {
         try {
           const result = await fetchUserId(id); // Ensure this calls the correct function
           const { data } = result; // Ensure data is retrieved correctly
-          console.log(result); // Debugging: see the result received
           setUsername(data.username);
           setEmail(data.email);
           setFullname(data.fullname);
@@ -79,11 +78,9 @@ const AdminOperatorForm = ({ isEdit }) => {
         if (isEdit && id) {
           // Update the operator data
           await editUser(id, newData);
-          console.log("Updated operator data:", newData);
         } else {
           // Create a new operator
           await createUser(newData);
-          console.log("New operator data:", newData);
         }
 
         // Redirect after submit

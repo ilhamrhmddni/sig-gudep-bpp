@@ -16,11 +16,12 @@ const AdminTemplate = ({ children }) => {
     { name: "Gugus Depan", icon: "school", path: "/admin/gugusdepan" },
     { name: "Geografis", icon: "map", path: "/admin/geografis" },
     { name: "Event", icon: "event", path: "/admin/event" },
+    { name: "Prestasi", path: "/admin/prestasi", icon: "star" },
     { name: "Peserta Didik", icon: "people", path: "/admin/pesertadidik" },
     {
-      name: "Request Laporan Gudep",
+      name: "Laporan Gudep",
       icon: "assignment",
-      path: "/admin/requestlaporangudep",
+      path: "/admin/laporangudep",
     },
   ];
 

@@ -1,15 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-const NotFound = ({ role }) => {
+const NotFound = () => {
   const navigate = useNavigate(); // Initialize useNavigate
+  const [role, setRole] = useState(null); // State untuk menyimpan role
 
   useEffect(() => {
-    // Check if the role is not recognized
-    if (!role) {
-      navigate("/404"); // Redirect to /dashboard if no role is provided
+    // Ambil role dari localStorage
+    const storedRole = localStorage.getItem("role");
+    setRole(storedRole); // Set role ke state
+
+    // Jika role tidak ada, arahkan ke halaman 404
+    if (!storedRole) {
+      navigate("/404");
     }
-  }, [role, navigate]);
+  }, [navigate]);
 
   const handleBack = () => {
     // Navigate based on the user's role
@@ -41,7 +46,7 @@ const NotFound = ({ role }) => {
           <div className="mt-4">
             <button
               onClick={handleBack}
-              className="px-4 py-2 bg-white text-[#9500FF] rounded hover:bg-blue-600"
+              className="px-4 py -2 bg-white text-[#9500FF] rounded hover:bg-blue-600"
             >
               Kembali
             </button>

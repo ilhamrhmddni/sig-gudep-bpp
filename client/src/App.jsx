@@ -14,17 +14,15 @@ import AdminGeografis from "./components/pages/admin/AdminGeografis";
 import AdminPesertaDidik from "./components/pages/admin/AdminPesertaDidik";
 import AdminEvent from "./components/pages/admin/AdminEvent";
 import AdminOperator from "./components/pages/admin/AdminOperator";
-import AdminRequestLaporanGudep from "./components/pages/admin/AdminRequestLaporanGudep";
+import AdminRequestLaporanGudep from "./components/pages/admin/AdminLaporanGudep";
 import AdminKwarranForm from "./components/pages/admin/AdminKwarranForm";
 import AdminOperatorForm from "./components/pages/admin/AdminOperatorForm";
-import AdminGudepForm from "./components/pages/operator/OperatorGudepForm";
+import AdminPrestasi from "./components/pages/admin/AdminPrestasi";
 
 const App = () => {
   const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
-
-  // Gunakan useMemo untuk mencegah decoding ulang setiap render
   let roleUser = "";
+
   if (token) {
     try {
       roleUser = jwtDecode(token).role; // Decode the token to get the role
@@ -32,7 +30,6 @@ const App = () => {
       console.error("Invalid token");
     }
   }
-
   return (
     <Router>
       <Routes>
@@ -170,10 +167,18 @@ const App = () => {
           }
         />
         <Route
-          path="/admin/requestlaporangudep"
+          path="/admin/laporangudep"
           element={
             <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
               <AdminRequestLaporanGudep />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/prestasi"
+          element={
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
+              <AdminPrestasi />
             </ProtectedRoute>
           }
         />

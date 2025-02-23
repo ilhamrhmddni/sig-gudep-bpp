@@ -19,9 +19,9 @@ const LoginPage = () => {
       // Pastikan ada token dan role
       setTimeout(() => {
         if (role === "admin") {
-          navigate("/admin/kwarran", { replace: false });
+          navigate("admin/kwarran", { replace: true });
         } else if (role === "operator") {
-          navigate("/operator/gugusdepan", { replace: false });
+          navigate("operator/gugusdepan", { replace: true });
         }
       }, 100);
     }
@@ -66,8 +66,12 @@ const LoginPage = () => {
           text: response.message,
         });
 
+        // Add a leading slash to the redirect URL
+        const redirectUrl = response.redirectUrl.startsWith("/")
+          ? response.redirectUrl
+          : `/${response.redirectUrl}`;
         // Redirect to the URL provided by the server
-        navigate(response.redirectUrl, { replace: true });
+        navigate(redirectUrl, { replace: true });
       } else {
         // If token is not present, login failed
         Swal.fire({

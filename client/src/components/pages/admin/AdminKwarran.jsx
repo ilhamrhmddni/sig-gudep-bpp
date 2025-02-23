@@ -61,7 +61,6 @@ const AdminKwarran = () => {
     try {
       await deleteKwarran(id); // Call the delete function from service
       setData(data.filter((item) => item.id !== id)); // Update local state after delete
-      console.log("Item deleted successfully");
     } catch (error) {
       console.error("Error deleting item", error);
     }
@@ -87,7 +86,7 @@ const AdminKwarran = () => {
               Data Kwarran
             </span>
             <SearchInput value={searchQuery} onChange={handleSearchChange} />
-            <AddButton onClick={() => navigate("/admin/kwarran/add")} />
+            <AddButton route={"/admin/kwarran/add"} />
           </div>
 
           {/* Loading state */}

@@ -16,7 +16,6 @@ const SidebarMenu = ({
   const handleLogout = async () => {
     try {
       const result = await logout(); // Call the logout function
-      console.log("Logout result:", result); // Log the result of the logout
 
       if (result.success) {
         // Check if the logout was successful

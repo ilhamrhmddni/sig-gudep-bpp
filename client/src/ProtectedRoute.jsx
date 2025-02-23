@@ -1,4 +1,3 @@
-import { Navigate } from "react-router-dom";
 import NotFound from "./components/pages/NotFound";
 
 const ProtectedRoute = ({ token, role, allowedRole, children }) => {
