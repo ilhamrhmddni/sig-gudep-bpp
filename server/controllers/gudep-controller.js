@@ -10,9 +10,9 @@ module.exports = {
           {
             model: Geografis,
             attributes: ["id", "titik_koordinat"],
-            required: true,
+            required: false,
           },
-          { model: Kwarran, attributes: ["id", "nama"], required: true },
+          { model: Kwarran, attributes: ["id", "nama"], required: false },
         ],
       });
       return res.status(200).json({
