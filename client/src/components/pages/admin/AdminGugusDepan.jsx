@@ -1,6 +1,5 @@
 // src/pages/AdminGugusdepan.js
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // For navigation
 import AdminTemplate from "../../templates/AdminTemplate";
 import TableR from "../../moleculs/TableR";
 import SearchInput from "../../atoms/SearchInput";

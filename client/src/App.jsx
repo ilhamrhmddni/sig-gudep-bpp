@@ -154,22 +154,6 @@ const App = () => {
           }
         />
         <Route
-          path="/admin/gudep/add"
-          element={
-            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
-              <AdminGudepForm isEdit={false} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/gudep/edit/:id"
-          element={
-            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
-              <AdminGudepForm isEdit={true} />
-            </ProtectedRoute>
-          }
-        />
-        <Route
           path="/admin/geografis"
           element={
             <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
