@@ -1,4 +1,4 @@
-const { Geografis } = require("../models");
+const { Geografis, Gudep } = require("../models");
 
 module.exports = {
   // Ambil semua data geografis
@@ -8,8 +8,7 @@ module.exports = {
         include: [
           {
             model: Gudep,
-            as: "gudep",
-            attributes: ["id", "no_gudep"], // Pastikan mengambil `no_gudep`
+            attributes: ["id", "no_gudep"],
           },
         ],
       });
