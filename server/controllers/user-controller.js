@@ -22,9 +22,7 @@ module.exports = {
   getUser: async (req, res) => {
     const { id } = req.params;
     try {
-      const user = await User.findByPk(id, {
-        attributes: { exclude: ["password"] }, // Hindari mengirim password
-      });
+      const user = await User.findByPk(id);
 
       if (!user) {
         return res.status(404).json({
