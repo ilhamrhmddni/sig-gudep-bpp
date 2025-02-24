@@ -99,30 +99,36 @@ module.exports = {
 
   // Update laporan berdasarkan ID
   updateLaporan: async (req, res) => {
-    const { id } = req.params;
-    const { nama, asal, no_hp, email, status } = req.body;
+    const { id } = req.params; // Get the ID from the request parameters
+    const { nama, asal, no_hp, email, status } = req.body; // Destructure the request body
 
     try {
+      // Find the laporan by primary key (id)
       const laporan = await Laporan.findByPk(id);
+
+      // Check if laporan exists
       if (!laporan) {
         return res.status(404).json({
           message: "Laporan tidak ditemukan",
         });
       }
 
+      // Update the laporan with the new data
       await laporan.update({
-        nama,
-        asal,
-        no_hp,
-        email,
-        status,
+        nama: nama || laporan.nama, // Only update if new value is provided
+        asal: asal || laporan.asal,
+        no_hp: no_hp || laporan.no_hp,
+        email: email || laporan.email,
+        status: status || laporan.status, // Ensure status is updated
       });
 
+      // Return a success response with the updated data
       return res.status(200).json({
         message: "Laporan berhasil diperbarui",
         data: laporan,
       });
     } catch (error) {
+      // Handle any errors that occur during the update
       return res.status(500).json({
         message: "Terjadi kesalahan server",
         error: error.message,

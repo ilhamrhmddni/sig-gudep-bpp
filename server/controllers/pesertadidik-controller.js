@@ -1,10 +1,18 @@
-const { PesertaDidik } = require("../models");
+const { PesertaDidik, Gudep } = require("../models");
 
 module.exports = {
   // Ambil semua peserta didik
   getAllPesertaDidik: async (req, res) => {
     try {
-      const allPesertaDidik = await PesertaDidik.findAll();
+      const allPesertaDidik = await PesertaDidik.findAll({
+        include: [
+          {
+            model: Gudep,
+            attributes: ["id", "no_gudep", "tingkatan"],
+            required: true,
+          },
+        ],
+      });
       return res.status(200).json({
         message: "Data peserta didik berhasil didapatkan",
         data: allPesertaDidik,
@@ -42,11 +50,11 @@ module.exports = {
 
   // Tambah peserta didik baru
   addPesertaDidik: async (req, res) => {
-    const { id_gudep, nama, gender, ttl, detailtingkatan } = req.body;
+    const { gudep_id, nama, gender, ttl, detailtingkatan } = req.body;
 
     try {
       const newPesertaDidik = await PesertaDidik.create({
-        id_gudep,
+        gudep_id,
         nama,
         gender,
         ttl,
