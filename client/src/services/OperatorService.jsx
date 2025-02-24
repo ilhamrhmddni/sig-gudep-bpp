@@ -98,3 +98,23 @@ export const createUser = async (data) => {
     throw error;
   }
 };
+
+export const fetchProfile = async (userId) => {
+  try {
+    const response = await fetch(`${API_URL}user/${userId}`);
+    const result = await response.json(); // Parse JSON
+
+    console.log("API Response:", result); // Debugging: lihat isi response
+
+    if (!response.ok) {
+      throw new Error(
+        `Error fetching user: ${response.status} ${response.statusText}`
+      );
+    }
+
+    return result.data; // Ambil hanya bagian "data"
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    throw error;
+  }
+};

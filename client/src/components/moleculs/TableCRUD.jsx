@@ -25,19 +25,19 @@ const TableCRUD = ({ headers, data, onEdit, onDelete }) => {
                   {item[header.key]} {/* Mengakses item dengan key */}
                 </td>
               ))}
-              <td className="border border-none px-4 py-2">
+              <td className="border border-none px-4 py-2 flex items-center justify-center">
                 <button
                   onClick={() => onEdit(item)}
-                  className="text-blue-500 mr-2 "
+                  className="text-blue-500 mr-2"
                 >
-                  <span className="material-icons">edit</span>{" "}
+                  <span className="material-icons cursor-pointer">edit</span>{" "}
                   {/* Ganti dengan ikon */}
                 </button>
                 <button
                   onClick={() => onDelete(item.id)}
                   className="text-red-500"
                 >
-                  <span className="material-icons">delete</span>{" "}
+                  <span className="material-icons cursor-pointer">delete</span>{" "}
                   {/* Ikon untuk delete */}
                 </button>
               </td>

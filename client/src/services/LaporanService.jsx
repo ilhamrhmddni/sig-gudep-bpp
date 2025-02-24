@@ -60,26 +60,22 @@ export const createLaporan = async (data) => {
 };
 
 // Fungsi untuk mengedit data laporan
-export const editLaporan = async (id, item) => {
-  try {
-    const response = await fetch(`${API_URL}laporan/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(item),
-    });
+export const editLaporan = async (id) => {
+  const response = await fetch(`${API_URL}laporan/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status: "selesai" }), // Mengubah status menjadi "selesai"
+  });
 
-    if (!response.ok) {
-      throw new Error("Failed to edit Laporan");
-    }
-
-    const updatedItem = await response.json();
-    return updatedItem;
-  } catch (error) {
-    console.error("Error editing Laporan:", error);
-    throw error;
+  if (!response.ok) {
+    throw new Error("Failed to update Laporan status");
   }
+
+  const result = await response.json();
+  console.log(result);
+  return result;
 };
 
 // Fungsi untuk menghapus data laporan

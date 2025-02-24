@@ -1,4 +1,5 @@
 import NotFound from "./components/pages/NotFound";
+import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ token, role, allowedRole, children }) => {
   // Jika tidak ada token, redirect ke login

@@ -1,18 +1,17 @@
-// src/pages/AdminLaporan.jsx
+// src/pages/AdminLaporanGudep.jsx
 import React, { useState, useEffect } from "react";
 import AdminTemplate from "../../templates/AdminTemplate";
-import TableR from "../../moleculs/TableR";
 import SearchInput from "../../atoms/SearchInput";
-import { fetchLaporan } from "../../../services/LaporanService"; // Menggunakan service untuk laporan
+import { fetchLaporan, editLaporan } from "../../../services/LaporanService";
+import TableRU from "../../moleculs/TableRU";
 
 const AdminLaporanGudep = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(""); // State untuk status
+  const [selectedStatus, setSelectedStatus] = useState("");
 
-  // Fetching Laporan data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,7 +35,6 @@ const AdminLaporanGudep = () => {
     { key: "asal", label: "Asal" },
     { key: "no_hp", label: "No. HP" },
     { key: "email", label: "Email" },
-    { key: "status", label: "Status" },
   ];
 
   const handleSearchChange = (e) => {
@@ -58,6 +56,19 @@ const AdminLaporanGudep = () => {
 
     return matchesSearch && matchesStatus;
   });
+
+  const handleApprove = async (id) => {
+    try {
+      const response = await editLaporan(id);
+      if (!response) {
+        throw new Error("No response from server");
+      }
+      const result = await fetchLaporan();
+      setData(Array.isArray(result.data) ? result.data : []);
+    } catch (error) {
+      console.error("Error approving laporan:", error.message);
+    }
+  };
 
   return (
     <AdminTemplate>
@@ -89,11 +100,15 @@ const AdminLaporanGudep = () => {
           </div>
 
           {loading && <p className="text-center mt-4">Loading data...</p>}
-          {error && <p className="text-center mt-4 text-red-500">{error}</p>}
+          {error && <p className="text-center mt-4 text-red-500 ">{error}</p>}
           {filteredData.length === 0 && !loading ? (
             <p className="text-center mt-4">Data tidak ditemukan</p>
           ) : (
-            <TableR headers={headers} data={filteredData} />
+            <TableRU
+              headers={headers}
+              data={filteredData}
+              onApprove={handleApprove}
+            />
           )}
         </div>
       </div>

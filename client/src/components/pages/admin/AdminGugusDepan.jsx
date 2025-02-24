@@ -128,7 +128,7 @@ const AdminGugusdepan = () => {
             <select
               value={selectedKwarran}
               onChange={handleKwarranChange}
-              className="m-2 p-2 border-2 border-white rounded-md text-white font-bold "
+              className="m-2 p-2 border-2 border-white rounded-md text-white font-bold cursor-pointer"
             >
               <option value="" className="text-[#9500FF] font-bold">
                 Kwarran
@@ -146,7 +146,7 @@ const AdminGugusdepan = () => {
             <select
               value={selectedTingkatan}
               onChange={handleTingkatanChange}
-              className="m-2 p-2 border-2 border-white rounded-md text-white font-bold"
+              className="m-2 p-2 border-2 border-white rounded-md text-white font-bold cursor-pointer"
             >
               <option value="" className="text-[#9500FF] font-bold">
                 Tingkatan

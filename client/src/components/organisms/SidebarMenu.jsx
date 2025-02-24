@@ -94,7 +94,7 @@ const SidebarMenu = ({
         </ul>
       </div>{" "}
       {/* Menampilkan ikon di kanan */}
-      <div className="md:mt-48 lg:mt-54 xl:mt-96 flex-grow">{rightIcon}</div>
+      <div className="md:mt-48 lg:mt-54 xl:mt-88 flex-grow">{rightIcon}</div>
       {/* Tombol Logout di bagian bawah */}
       <div className="flex flex-col items-center mb-4">
         <button

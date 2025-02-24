@@ -1,18 +1,18 @@
 // src/pages/AdminEvent.js
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // For navigation
 import AdminTemplate from "../../templates/AdminTemplate";
-import TableR from "../../moleculs/TableR";
+import TableCRUD from "../../moleculs/TableCRUD"; // Update to use TableCRUD
 import SearchInput from "../../atoms/SearchInput";
-import { fetchEvents } from "../../../services/EventService"; // Menggunakan service yang baru
-import { fetchKwarran } from "../../../services/KwarranService"; // Menggunakan service yang baru
+import AddButton from "../../atoms/AddButton"; // Import the AddButton component
+import { fetchEvents, deleteEvent } from "../../../services/EventService"; // Update to include CRUD services
 
 const AdminEvent = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
-  const [kwarranList, setKwarranList] = useState([]);
-  const [selectedKwarran, setSelectedKwarran] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Hook for navigating to another route
 
   // Fetching Event data from API
   useEffect(() => {
@@ -33,20 +33,6 @@ const AdminEvent = () => {
     fetchData();
   }, []);
 
-  // Fetching Kwarran data for filter options
-  useEffect(() => {
-    const fetchKwarranData = async () => {
-      try {
-        const result = await fetchKwarran();
-        setKwarranList(result.data || []);
-      } catch (error) {
-        console.error("Error fetching Kwarran data:", error);
-      }
-    };
-
-    fetchKwarranData();
-  }, []);
-
   const headers = [
     { key: "nama", label: "Nama Event" },
     { key: "tanggal_mulai", label: "Tanggal Mulai" },
@@ -60,17 +46,42 @@ const AdminEvent = () => {
     setSearchQuery(e.target.value);
   };
 
-  const handleKwarranChange = (e) => {
-    setSelectedKwarran(e.target.value);
+  const handleEdit = (item) => {
+    navigate(`/admin/event/edit/${item.id}`);
   };
 
-  const filteredData = data.filter((item) => {
-    const matchesSearch =
-      (item.nama ?? "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (item.tempat ?? "").toLowerCase().includes(searchQuery.toLowerCase());
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this event?")) {
+      try {
+        await deleteEvent(id);
+        setData(data.filter((item) => item.id !== id)); // Update local state
+      } catch (error) {
+        console.error("Error deleting event:", error);
+      }
+    }
+  };
 
-    return matchesSearch;
-  });
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`; // Format: DD-MM-YYYY
+  };
+
+  const filteredData = data
+    .filter((item) => {
+      const matchesSearch =
+        (item.nama ?? "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.tempat ?? "").toLowerCase().includes(searchQuery.toLowerCase());
+
+      return matchesSearch;
+    })
+    .map((item) => ({
+      ...item,
+      tanggal_mulai: formatDate(item.tanggal_mulai), // Format the date for display
+      tanggal_selesai: formatDate(item.tanggal_selesai),
+    }));
 
   return (
     <AdminTemplate>
@@ -84,32 +95,27 @@ const AdminEvent = () => {
               Data Event
             </span>
             <SearchInput value={searchQuery} onChange={handleSearchChange} />
-            <select
-              value={selectedKwarran}
-              onChange={handleKwarranChange}
-              className="m-2 p-2 border-2 border-white rounded-md text-white font-bold"
-            >
-              <option value="" className="text-[#9500FF] font-bold">
-                Kwarran
-              </option>
-              {kwarranList.map((kwarran) => (
-                <option
-                  key={kwarran.id}
-                  value={kwarran.id}
-                  className="text-[#9500FF] font-bold"
-                >
-                  {kwarran.nama}
-                </option>
-              ))}
-            </select>
+            <AddButton
+              route={"/admin/event/add"} // Assuming you have a route for adding events
+            />
           </div>
 
+          {/* Loading state */}
           {loading && <p className="text-center mt-4">Loading data...</p>}
+
+          {/* Error state */}
           {error && <p className="text-center mt-4 text-red-500">{error}</p>}
+
+          {/* Displaying the table or message if no data found */}
           {filteredData.length === 0 && !loading ? (
             <p className="text-center mt-4">Data tidak ditemukan</p>
           ) : (
-            <TableR headers={headers} data={filteredData} />
+            <TableCRUD
+              headers={headers}
+              data={filteredData}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
           )}
         </div>
       </div>

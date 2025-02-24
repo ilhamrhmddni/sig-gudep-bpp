@@ -23,7 +23,7 @@ const NotFound = () => {
     } else if (role === "operator") {
       navigate("/operator/gugusdepan"); // Redirect operator to the gugusdepan page
     } else {
-      navigate("/404"); // Default redirect if role is not recognized
+      navigate("/login"); // Default redirect if role is not recognized
     }
   };
 

@@ -1,30 +1,34 @@
-// src/pages/AdminPesertaDidik.js
 import React, { useState, useEffect } from "react";
 import AdminTemplate from "../../templates/AdminTemplate";
 import TableR from "../../moleculs/TableR";
 import SearchInput from "../../atoms/SearchInput";
 import { fetchPesertadidik } from "../../../services/PesertadidikService";
 import { fetchKwarran } from "../../../services/KwarranService";
-import { fetchGugusdepan } from "../../../services/GugusdepanService"; // Menggunakan service untuk gudep
+import { fetchGugusdepan } from "../../../services/GugusdepanService";
 
 const AdminPesertaDidik = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
   const [kwarranList, setKwarranList] = useState([]);
-  const [gudepList, setGudepList] = useState([]); // State untuk menyimpan data gudep
-  const [selectedKwarran, setSelectedKwarran] = useState("");
-  const [selectedTingkatan, setSelectedTingkatan] = useState("");
-  const [noGudep, setNoGudep] = useState("");
+  const [gudepList, setGudepList] = useState([]);
+  const [selectedGudep, setSelectedGudep] = useState(""); // State for selected No. Gudep
+  const [selectedTingkatan, setSelectedTingkatan] = useState(""); // State for selected Tingkatan
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetching Peserta Didik data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await fetchPesertadidik();
-        setData(Array.isArray(result.data) ? result.data : []);
+        const [pesertaResult, kwarranResult, gudepResult] = await Promise.all([
+          fetchPesertadidik(),
+          fetchKwarran(),
+          fetchGugusdepan(),
+        ]);
+
+        setData(Array.isArray(pesertaResult.data) ? pesertaResult.data : []);
+        setKwarranList(kwarranResult.data || []);
+        setGudepList(gudepResult.data || []);
         setError(null);
       } catch (error) {
         setError("Error fetching data.");
@@ -33,84 +37,40 @@ const AdminPesertaDidik = () => {
         setLoading(false);
       }
     };
-
     fetchData();
-  }, []);
-
-  // Fetching Kwarran data for filter options
-  useEffect(() => {
-    const fetchKwarranData = async () => {
-      try {
-        const result = await fetchKwarran();
-        setKwarranList(result.data || []);
-      } catch (error) {
-        console.error("Error fetching Kwarran data:", error);
-      }
-    };
-
-    fetchKwarranData();
-  }, []);
-
-  // Fetching Gudep data for dropdown options
-  useEffect(() => {
-    const fetchGudepData = async () => {
-      try {
-        const result = await fetchGugusdepan();
-        setGudepList(result.data || []);
-      } catch (error) {
-        console.error("Error fetching Gudep data:", error);
-      }
-    };
-
-    fetchGudepData();
   }, []);
 
   const headers = [
     { key: "no_gudep", label: "No. Gudep" },
+    { key: "tingkatan", label: "Tingkatan" },
     { key: "nama", label: "Nama Peserta Didik" },
     { key: "gender", label: "Gender" },
     { key: "ttl", label: "Tempat, Tanggal Lahir" },
     { key: "detailtingkatan", label: "Detail Tingkatan" },
   ];
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  // Enrich data with No. Gudep and Tingkatan
+  const enrichedData = data.map((item) => {
+    const matchedGudep = gudepList.find((gudep) => gudep.id === item.gudep_id); // Match by gudep_id
+    return {
+      ...item,
+      no_gudep: matchedGudep ? matchedGudep.no_gudep : "N/A", // Get No. Gudep
+      tingkatan: matchedGudep ? matchedGudep.tingkatan : "N/A", // Get Tingkatan
+    };
+  });
 
-  const handleKwarranChange = (e) => {
-    setSelectedKwarran(e.target.value);
-  };
-
-  const handleTingkatanChange = (e) => {
-    setSelectedTingkatan(e.target.value);
-  };
-
-  const handleNoGudepChange = (e) => {
-    setNoGudep(e.target.value);
-  };
-
-  const filteredData = data.filter((item) => {
+  // Filter based on search query, No. Gudep, and Tingkatan
+  const filteredData = enrichedData.filter((item) => {
     const matchesSearch =
-      (item.nama ?? "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (item.detailtingkatan ?? "")
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+      item.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.detailtingkatan.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesKwarran = selectedKwarran
-      ? item.kwarran_id === selectedKwarran
-      : true;
-
+    const matchesGudep = selectedGudep ? item.no_gudep === selectedGudep : true;
     const matchesTingkatan = selectedTingkatan
-      ? item.detailtingkatan === selectedTingkatan
+      ? item.tingkatan === selectedTingkatan
       : true;
 
-    const matchesNoGudep = noGudep
-      ? item.no_gudep?.toString() === noGudep
-      : true;
-
-    return (
-      matchesSearch && matchesKwarran && matchesTingkatan && matchesNoGudep
-    );
+    return matchesSearch && matchesGudep && matchesTingkatan;
   });
 
   return (
@@ -124,66 +84,35 @@ const AdminPesertaDidik = () => {
             >
               Data Peserta Didik
             </span>
-            <SearchInput value={searchQuery} onChange={handleSearchChange} />
+            <SearchInput
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <select
-              value={selectedKwarran}
-              onChange={handleKwarranChange}
+              value={selectedGudep}
+              onChange={(e) => setSelectedGudep(e.target.value)}
               className="m-2 p-2 border-2 border-white rounded-md text-white font-bold"
             >
-              <option value="" className="text-[#9500FF] font-bold">
-                Kwarran
-              </option>
-              {kwarranList.map((kwarran) => (
-                <option
-                  key={kwarran.id}
-                  value={kwarran.id}
-                  className="text-[#9500FF] font-bold"
-                >
-                  {kwarran.nama}
+              <option value="">No. Gudep</option>
+              {gudepList.map((gudep) => (
+                <option key={gudep.id} value={gudep.no_gudep}>
+                  {gudep.no_gudep}
                 </option>
               ))}
             </select>
             <select
               value={selectedTingkatan}
-              onChange={handleTingkatanChange}
+              onChange={(e) => setSelectedTingkatan(e.target.value)}
               className="m-2 p-2 border-2 border-white rounded-md text-white font-bold"
             >
-              <option value="" className="text-[#9500FF] font-bold">
-                Tingkatan
-              </option>
-              <option value="Siaga" className="text-[#9500FF] font-bold">
-                Siaga
-              </option>
-              <option value="Penggalang" className="text-[#9500FF] font-bold">
-                Penggalang
-              </option>
-              <option value="Penegak" className="text-[#9500FF] font-bold">
-                Penegak
-              </option>
-              <option value="Pandega" className="text-[#9500FF] font-bold">
-                Pandega
-              </option>
-            </select>
-            <select
-              value={noGudep}
-              onChange={handleNoGudepChange}
-              className="m-2 p-2 border-2 border-white rounded-md text-white font-bold"
-            >
-              <option value="" className="text-[#9500FF] font-bold">
-                No. Gudep
-              </option>
+              <option value="">Tingkatan</option>
               {gudepList.map((gudep) => (
-                <option
-                  key={gudep.id}
-                  value={gudep.no_gudep}
-                  className="text-[#9500FF] font-bold"
-                >
-                  {gudep.no_gudep}
+                <option key={gudep.id} value={gudep.tingkatan}>
+                  {gudep.tingkatan}
                 </option>
               ))}
             </select>
           </div>
-
           {loading && <p className="text-center mt-4">Loading data...</p>}
           {error && <p className="text-center mt-4 text-red-500">{error}</p>}
           {filteredData.length === 0 && !loading ? (

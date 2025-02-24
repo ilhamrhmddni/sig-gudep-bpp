@@ -20,7 +20,7 @@ const TableR = ({ headers, data = [] }) => {
               {headers.map((header, idx) => (
                 <td
                   key={idx}
-                  className="border border-none px-2 py-1 text-center"
+                  className="border border-none px-2 py-1 text-center "
                 >
                   {item[header.key]} {/* Mengakses item dengan key */}
                 </td>

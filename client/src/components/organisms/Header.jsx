@@ -25,7 +25,6 @@ const Header = () => {
 
         if (response.ok && data.data && data.data.photo_path) {
           let imageUrl = data.data.photo_path.trim();
-
           setProfilePic(imageUrl);
         } else {
           console.warn(
@@ -61,7 +60,7 @@ const Header = () => {
           className="rounded-full border border-white p-1 transition-transform hover:border-gray-200"
         >
           <img
-            src={isImageError ? "/default-profile.png" : profilePic}
+            src={isImageError ? profilePic : "/default-profile.png"}
             alt="Profile"
             className="w-10 h-10 rounded-full object-cover"
             referrerPolicy="no-referrer"

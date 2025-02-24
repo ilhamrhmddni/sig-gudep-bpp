@@ -18,7 +18,7 @@ const AdminOperatorForm = ({ isEdit }) => {
   const [role, setRole] = useState("operator"); // Default role
   const [oldPassword, setOldPassword] = useState(""); // State for old password
   const [showOldPassword, setShowOldPassword] = useState(false); // State to toggle visibility of old password
-  const [isLoggedIn, setIsLoggedIn] = useState(""); // Default status login
+  const [isLoggedIn, setIsLoggedIn] = useState("false"); // Default status login
   const navigate = useNavigate();
   const { id } = useParams(); // Get ID from URL
 

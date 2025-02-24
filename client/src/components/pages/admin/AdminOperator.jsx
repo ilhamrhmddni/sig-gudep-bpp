@@ -67,11 +67,7 @@ const AdminOperator = () => {
         item.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.asal?.toLowerCase().includes(searchQuery.toLowerCase())
     )
-    .filter((item) => item.role !== "admin") // Exclude admin users
-    .sort((a, b) => {
-      // Sort by username or any other criteria if needed
-      return a.username.localeCompare(b.username);
-    });
+    .filter((item) => item.role !== "admin");
 
   return (
     <AdminTemplate>

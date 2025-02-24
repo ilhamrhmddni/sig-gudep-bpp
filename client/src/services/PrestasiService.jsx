@@ -21,11 +21,9 @@ export const fetchEventGudeps = async () => {
 };
 
 // Fungsi untuk mengambil data event_gudep berdasarkan ID
-export const fetchEventGudepById = async (event_id, gudep_id) => {
+export const fetchEventGudepById = async (eventgudep_id) => {
   try {
-    const response = await fetch(
-      `${API_URL}eventgudep/${event_id}/${gudep_id}`
-    );
+    const response = await fetch(`${API_URL}eventgudep/${eventgudep_id}`);
 
     if (!response.ok) {
       throw new Error("Failed to fetch Event Gudep data");
@@ -62,18 +60,15 @@ export const createEventGudep = async (data) => {
 };
 
 // Fungsi untuk mengedit data event_gudep
-export const editEventGudep = async (event_id, gudep_id, item) => {
+export const editEventGudep = async (eventgudep_id, item) => {
   try {
-    const response = await fetch(
-      `${API_URL}eventgudep/${event_id}/${gudep_id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(item),
-      }
-    );
+    const response = await fetch(`${API_URL}eventgudep/${eventgudep_id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(item),
+    });
 
     if (!response.ok) {
       throw new Error("Failed to edit Event Gudep");
@@ -83,28 +78,6 @@ export const editEventGudep = async (event_id, gudep_id, item) => {
     return updatedItem;
   } catch (error) {
     console.error("Error editing Event Gudep:", error);
-    throw error;
-  }
-};
-
-// Fungsi untuk menghapus data event_gudep
-export const deleteEventGudep = async (event_id, gudep_id) => {
-  try {
-    const response = await fetch(
-      `${API_URL}eventgudep/${event_id}/${gudep_id}`,
-      {
-        method: "DELETE",
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to delete Event Gudep");
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error("Error deleting Event Gudep:", error);
     throw error;
   }
 };

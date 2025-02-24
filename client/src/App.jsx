@@ -18,6 +18,8 @@ import AdminRequestLaporanGudep from "./components/pages/admin/AdminLaporanGudep
 import AdminKwarranForm from "./components/pages/admin/AdminKwarranForm";
 import AdminOperatorForm from "./components/pages/admin/AdminOperatorForm";
 import AdminPrestasi from "./components/pages/admin/AdminPrestasi";
+import AdminEventForm from "./components/pages/admin/AdminEventForm";
+import AdminProfile from "./components/pages/admin/AdminProfile";
 
 const App = () => {
   const token = localStorage.getItem("token");
@@ -167,6 +169,22 @@ const App = () => {
           }
         />
         <Route
+          path="/admin/event/add"
+          element={
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
+              <AdminEventForm isEdit={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/event/edit/:id"
+          element={
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
+              <AdminEventForm isEdit={true} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/admin/laporangudep"
           element={
             <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
@@ -182,7 +200,14 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/admin/profile"
+          element={
+            <ProtectedRoute token={token} role={roleUser} allowedRole="admin">
+              <AdminProfile />
+            </ProtectedRoute>
+          }
+        />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound role={roleUser} />} />
       </Routes>

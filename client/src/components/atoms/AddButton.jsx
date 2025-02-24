@@ -12,7 +12,7 @@ const AddButton = ({ route }) => {
   return (
     <button
       onClick={handleClick}
-      className="bg-[#9500FF] text-white rounded-md m-2 border-2"
+      className="bg-[#9500FF] text-white rounded-md m-2 border-2 cursor-pointer"
     >
       <span className="material-icons m-2" style={{ color: "white" }}>
         add

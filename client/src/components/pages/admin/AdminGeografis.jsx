@@ -74,7 +74,7 @@ const AdminGeografis = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+          <button className="px-3 py-1 bg-[#9500FF] text-white rounded hover:bg-[#590396] transition cursor-pointer">
             📍 Lihat di Maps
           </button>
         </a>
@@ -107,11 +107,11 @@ const AdminGeografis = () => {
             </span>
             <SearchInput value={searchQuery} onChange={handleSearchChange} />
             <select
+              className="m-2 p-2 border-2 border-white rounded-md text-white font-bold cursor-pointer"
               value={selectedKwarran}
               onChange={handleKwarranChange}
-              className="m-2 p-2 border-2 border-white rounded-md text-white font-bold "
             >
-              <option value="" className="text-[#9500FF] font-bold">
+              <option value="" className="text-[#9500FF] font-bold ">
                 Kwarran
               </option>
               {kwarranList.map((kwarran) => (
