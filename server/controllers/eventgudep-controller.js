@@ -6,8 +6,12 @@ module.exports = {
     try {
       const allEventGudeps = await EventGudep.findAll({
         include: [
-          { model: Event, attributes: ["id", "nama"], required: true },
-          { model: Gudep, attributes: ["id", "no_gudep"], required: true },
+          { model: Event, attributes: ["id", "nama"], required: false },
+          {
+            model: Gudep,
+            attributes: ["id", "no_gudep", "tingkatan"],
+            required: false,
+          },
         ],
       });
       return res.status(200).json({
