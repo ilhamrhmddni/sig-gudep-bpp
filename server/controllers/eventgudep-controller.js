@@ -22,13 +22,15 @@ module.exports = {
     }
   },
 
-  // Ambil satu data event_gudep berdasarkan event_id dan gudep_id
+  // Ambil satu data event_gudep berdasarkan eventgudep_id
   getEventGudepById: async (req, res) => {
-    const { event_id, gudep_id } = req.params;
+    const { eventgudep_id } = req.params; // Extract the parameter
+
+    console.log("Received eventgudep_id:", eventgudep_id); // Log the parameter
 
     try {
       const eventGudep = await EventGudep.findOne({
-        where: { event_id, gudep_id },
+        where: { id: eventgudep_id }, // Use the parameter in the query
         include: [
           { model: Event, attributes: ["id", "nama"] },
           { model: Gudep, attributes: ["id", "no_gudep"] },
@@ -79,12 +81,12 @@ module.exports = {
 
   // Edit hubungan event dengan gudep
   updateEventGudep: async (req, res) => {
-    const { event_id, gudep_id } = req.params;
+    const { eventgudep_id } = req.params; // Get eventgudep_id from params
     const { newevent_id, newgudep_id } = req.body;
 
     try {
       const eventGudep = await EventGudep.findOne({
-        where: { event_id, gudep_id },
+        where: { id: eventgudep_id }, // Use eventgudep_id to find the record
       });
 
       if (!eventGudep) {
@@ -112,11 +114,11 @@ module.exports = {
 
   // Hapus hubungan event dengan gudep
   deleteEventGudep: async (req, res) => {
-    const { event_id, gudep_id } = req.params;
+    const { eventgudep_id } = req.params; // Get eventgudep_id from params
 
     try {
       const eventGudep = await EventGudep.findOne({
-        where: { event_id, gudep_id },
+        where: { id: eventgudep_id }, // Use eventgudep_id to find the record
       });
 
       if (!eventGudep) {
