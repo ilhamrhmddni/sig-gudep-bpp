@@ -82,7 +82,7 @@ module.exports = {
   // Edit hubungan event dengan gudep
   updateEventGudep: async (req, res) => {
     const { id } = req.params; // Get eventgudep_id from params
-    const { newevent_id, newgudep_id } = req.body;
+    const { newevent_id, newgudep_id, keterangan } = req.body;
 
     try {
       const eventGudep = await EventGudep.findOne({
@@ -95,8 +95,16 @@ module.exports = {
         });
       }
 
-      eventGudep.event_id = newevent_id || eventGudep.event_id;
-      eventGudep.gudep_id = newgudep_id || eventGudep.gudep_id;
+      // Update only if new values are provided
+      if (newevent_id !== undefined) {
+        eventGudep.event_id = newevent_id;
+      }
+      if (newgudep_id !== undefined) {
+        eventGudep.gudep_id = newgudep_id;
+      }
+      if (keterangan !== undefined) {
+        eventGudep.keterangan = keterangan; // Update keterangan if provided
+      }
 
       await eventGudep.save();
 
@@ -114,11 +122,11 @@ module.exports = {
 
   // Hapus hubungan event dengan gudep
   deleteEventGudep: async (req, res) => {
-    const { eventgudep_id } = req.params; // Get eventgudep_id from params
+    const { id } = req.params; // Get eventgudep_id from params
 
     try {
       const eventGudep = await EventGudep.findOne({
-        where: { id: eventgudep_id }, // Use eventgudep_id to find the record
+        where: { id: id }, // Use eventgudep_id to find the record
       });
 
       if (!eventGudep) {
