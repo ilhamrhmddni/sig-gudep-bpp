@@ -13,7 +13,6 @@ module.exports = {
 
     if (
       !nama ||
-      !tanggal ||
       !tempat ||
       !tanggal_mulai ||
       !tanggal_selesai ||
