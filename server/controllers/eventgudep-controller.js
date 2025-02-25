@@ -61,7 +61,7 @@ module.exports = {
 
   // Tambah hubungan event dengan gudep
   addEventGudep: async (req, res) => {
-    const { event_id, gudep_id } = req.body;
+    const { event_id, gudep_id, keterangan } = req.body;
 
     if (!event_id || !gudep_id) {
       return res.status(400).json({
@@ -70,7 +70,11 @@ module.exports = {
     }
 
     try {
-      const newEventGudep = await EventGudep.create({ event_id, gudep_id });
+      const newEventGudep = await EventGudep.create({
+        event_id,
+        gudep_id,
+        keterangan,
+      });
       return res.status(201).json({
         message: "Relasi event dan gudep berhasil ditambahkan",
         data: newEventGudep,
