@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import ProtectedRoute from "./ProtectedRoute";
@@ -6,7 +6,7 @@ import LoginPage from "./components/pages/LoginPage";
 import OperatorGugusDepan from "./components/pages/operator/OperatorGugusDepan";
 import OperatorGeografis from "./components/pages/operator/OperatorGeografis";
 import OperatorPesertaDidik from "./components/pages/operator/OperatorPesertaDidik";
-import OperatorEvent from "./components/pages/operator/OperatorEvent";
+import OperatorPrestasi from "./components/pages/operator/OperatorPrestasi";
 import AdminKwarran from "./components/pages/admin/AdminKwarran";
 import NotFound from "./components/pages/NotFound";
 import AdminGugusDepan from "./components/pages/admin/AdminGugusDepan";
@@ -20,6 +20,10 @@ import AdminOperatorForm from "./components/pages/admin/AdminOperatorForm";
 import AdminPrestasi from "./components/pages/admin/AdminPrestasi";
 import AdminEventForm from "./components/pages/admin/AdminEventForm";
 import AdminProfile from "./components/pages/admin/AdminProfile";
+import OperatorPrestasiForm from "./components/pages/operator/OperatorPrestasiForm";
+import OperatorEventForm from "./components/pages/operator/OperatorEventForm";
+import OperatorPesertaDidikForm from "./components/pages/operator/OperatorGugusDepanForm";
+import OperatorProfile from "./components/pages/operator/OperatorProfile";
 
 const App = () => {
   const token = localStorage.getItem("token");
@@ -63,14 +67,50 @@ const App = () => {
           }
         />
         <Route
-          path="/operator/event"
+          path="/operator/prestasi"
           element={
             <ProtectedRoute
               token={token}
               role={roleUser}
               allowedRole="operator"
             >
-              <OperatorEvent />
+              <OperatorPrestasi />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/operator/prestasi/add"
+          element={
+            <ProtectedRoute
+              token={token}
+              role={roleUser}
+              allowedRole="operator"
+            >
+              <OperatorPrestasiForm isEdit={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/operator/prestasi/edit/:id"
+          element={
+            <ProtectedRoute
+              token={token}
+              role={roleUser}
+              allowedRole="operator"
+            >
+              <OperatorPrestasiForm isEdit={true} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/operator/event/add"
+          element={
+            <ProtectedRoute
+              token={token}
+              role={roleUser}
+              allowedRole="operator"
+            >
+              <OperatorEventForm />
             </ProtectedRoute>
           }
         />
@@ -86,7 +126,42 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/operator/pesertadidik/add"
+          element={
+            <ProtectedRoute
+              token={token}
+              role={roleUser}
+              allowedRole="operator"
+            >
+              <OperatorPesertaDidikForm isEdit={false} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/operator/pesertadidik/edit/:id"
+          element={
+            <ProtectedRoute
+              token={token}
+              role={roleUser}
+              allowedRole="operator"
+            >
+              <OperatorPesertaDidikForm isEdit={true} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/operator/profile"
+          element={
+            <ProtectedRoute
+              token={token}
+              role={roleUser}
+              allowedRole="operator"
+            >
+              <OperatorProfile />
+            </ProtectedRoute>
+          }
+        />
         {/* Admin Routes */}
         <Route
           path="/admin/kwarran/add"

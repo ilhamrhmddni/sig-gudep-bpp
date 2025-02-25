@@ -48,21 +48,26 @@ export const createEventGudep = async (data) => {
       body: JSON.stringify(data),
     });
 
+    // Log the response for debugging purposes
+    const responseBody = await response.json(); // Read the response body
+    console.log("Response Body:", responseBody); // Log the response body
+
     if (!response.ok) {
-      throw new Error("Failed to create Event Gudep");
+      // If the response is not OK, throw an error with the message from the response
+      throw new Error(`Failed to create Event Gudep: ${responseBody.message}`);
     }
 
-    return await response.json();
+    return responseBody; // Return the response data if the request was successful
   } catch (error) {
     console.error("Error creating Event Gudep:", error);
-    throw error;
+    throw error; // Rethrow the error for handling in the calling function
   }
 };
 
 // Fungsi untuk mengedit data event_gudep
-export const editEventGudep = async (eventgudep_id, item) => {
+export const editEventGudep = async (id, item) => {
   try {
-    const response = await fetch(`${API_URL}eventgudep/${eventgudep_id}`, {
+    const response = await fetch(`${API_URL}eventgudep/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -78,6 +83,24 @@ export const editEventGudep = async (eventgudep_id, item) => {
     return updatedItem;
   } catch (error) {
     console.error("Error editing Event Gudep:", error);
+    throw error;
+  }
+};
+
+// Fungsi untuk menghapus data event_gudep
+export const deleteEventGudep = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}eventgudep/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete Event Gudep");
+    }
+
+    return await response.json(); // Optionally return the response if needed
+  } catch (error) {
+    console.error("Error deleting Event Gudep:", error);
     throw error;
   }
 };

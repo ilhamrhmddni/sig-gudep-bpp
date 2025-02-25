@@ -54,8 +54,8 @@ const AdminPesertaDidik = () => {
     const matchedGudep = gudepList.find((gudep) => gudep.id === item.gudep_id); // Match by gudep_id
     return {
       ...item,
-      no_gudep: matchedGudep ? matchedGudep.no_gudep : "N/A", // Get No. Gudep
-      tingkatan: matchedGudep ? matchedGudep.tingkatan : "N/A", // Get Tingkatan
+      no_gudep: matchedGudep ? matchedGudep.no_gudep : "-", // Get No. Gudep
+      tingkatan: matchedGudep ? matchedGudep.tingkatan : "-", // Get Tingkatan
     };
   });
 

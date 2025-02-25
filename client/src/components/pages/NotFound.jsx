@@ -46,7 +46,7 @@ const NotFound = () => {
           <div className="mt-4">
             <button
               onClick={handleBack}
-              className="px-4 py -2 bg-white text-[#9500FF] rounded hover:bg-blue-600"
+              className="px-4 py-2 bg-white text-[#9500FF] rounded hover:bg-blue-600"
             >
               Kembali
             </button>

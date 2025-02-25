@@ -1,5 +1,10 @@
-// src/moleculs/TableR.js
 import React from "react";
+
+const getNestedValue = (obj, path) => {
+  return path
+    .split(".")
+    .reduce((acc, key) => (acc && acc[key] ? acc[key] : "-"), obj);
+};
 
 const TableR = ({ headers, data = [] }) => {
   return (
@@ -8,7 +13,7 @@ const TableR = ({ headers, data = [] }) => {
         <tr>
           {headers.map((header, index) => (
             <th key={index} className="border px-4 py-2 border-none">
-              {header.label} {/* Menampilkan label */}
+              {header.label}
             </th>
           ))}
         </tr>
@@ -20,9 +25,9 @@ const TableR = ({ headers, data = [] }) => {
               {headers.map((header, idx) => (
                 <td
                   key={idx}
-                  className="border border-none px-2 py-1 text-center "
+                  className="border border-none px-2 py-1 text-center"
                 >
-                  {item[header.key]} {/* Mengakses item dengan key */}
+                  {getNestedValue(item, header.key)}
                 </td>
               ))}
             </tr>

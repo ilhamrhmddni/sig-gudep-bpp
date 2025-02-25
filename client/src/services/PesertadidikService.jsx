@@ -50,13 +50,14 @@ export const createPesertadidik = async (data) => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to create Peserta Didik");
+      const errorText = await response.text(); // Get error message from response
+      throw new Error(`Failed to create Peserta Didik: ${errorText}`);
     }
 
     return await response.json();
   } catch (error) {
     console.error("Error creating Peserta Didik:", error);
-    throw error;
+    throw error; // Rethrow the error for further handling
   }
 };
 

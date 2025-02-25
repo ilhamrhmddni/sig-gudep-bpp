@@ -40,6 +40,17 @@ const Header = () => {
     fetchProfilePic();
   }, [API_URL, userId]);
 
+  const handleNavigate = () => {
+    switch (role) {
+      case "admin":
+        navigate("/admin/profile");
+        break;
+      case "operator":
+        navigate("/operator/profile");
+        break;
+    }
+  };
+
   return (
     <header className="w-full p-4 bg-white text-[#9500FF] flex items-center justify-between shadow-md">
       {/* Logo */}
@@ -56,7 +67,7 @@ const Header = () => {
           <p className="text-[12px] text-[#9500FF]">{role}</p>
         </div>
         <button
-          onClick={() => navigate("/admin/profile")}
+          onClick={handleNavigate}
           className="rounded-full border border-white p-1 transition-transform hover:border-gray-200"
         >
           <img

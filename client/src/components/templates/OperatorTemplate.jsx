@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SidebarMenu from "../organisms/SidebarMenu"; // Mengimpor Sidebar
+import Header from "../organisms/Header";
 
 const OperatorTemplate = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,7 @@ const OperatorTemplate = ({ children }) => {
   const menuItems = [
     {
       name: "Data Gugus Depan",
-      icon: "home", // Nama ikon dari Google Icons
+      icon: "school", // Nama ikon dari Google Icons
       path: "/operator/gugusdepan",
     },
     {
@@ -21,9 +22,9 @@ const OperatorTemplate = ({ children }) => {
       path: "/operator/geografis",
     },
     {
-      name: "Data Event",
-      icon: "event", // Nama ikon dari Google Icons
-      path: "/operator/event",
+      name: "Data Prestasi",
+      icon: "star", // Nama ikon dari Google Icons
+      path: "/operator/prestasi",
     },
     {
       name: "Data Peserta Didik",
@@ -53,6 +54,7 @@ const OperatorTemplate = ({ children }) => {
           transition: "margin-left 0.3s ease",
         }}
       >
+        <Header title="Dashboard Admin" />
         {/* Konten halaman utama */}
         <div className="p-4">{children}</div>
       </div>

@@ -1,28 +1,26 @@
-// src/pages/AdminGugusdepan.js
 import React, { useState, useEffect } from "react";
 import AdminTemplate from "../../templates/AdminTemplate";
 import TableR from "../../moleculs/TableR";
 import SearchInput from "../../atoms/SearchInput";
-import { fetchGugusdepan } from "../../../services/GugusdepanService"; // Assuming the service file is set up
+import { fetchGugusdepan } from "../../../services/GugusdepanService";
 import { fetchKwarran } from "../../../services/KwarranService";
 
 const AdminGugusdepan = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState([]);
-  const [kwarranList, setKwarranList] = useState([]); // State for Kwarran list
-  const [selectedKwarran, setSelectedKwarran] = useState(""); // State for selected Kwarran
-  const [selectedTingkatan, setSelectedTingkatan] = useState(""); // State for selected Tingkatan
-  const [loading, setLoading] = useState(true); // For loading state
-  const [error, setError] = useState(null); // To handle errors
+  const [kwarranList, setKwarranList] = useState([]); // List Kwarran
+  const [selectedKwarran, setSelectedKwarran] = useState(""); // Pilihan Kwarran
+  const [selectedTingkatan, setSelectedTingkatan] = useState(""); // Pilihan Tingkatan
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetching Gugusdepan data from API
+  // Ambil data Gugusdepan dari API
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const result = await fetchGugusdepan();
-
-        setData(Array.isArray(result.data) ? result.data : []); // Ensure `data` is always an array
+        setData(Array.isArray(result.data) ? result.data : []);
         setError(null);
       } catch (error) {
         setError("Error fetching data.");
@@ -35,12 +33,12 @@ const AdminGugusdepan = () => {
     fetchData();
   }, []);
 
-  // Fetching Kwarran data for filter options
+  // Ambil data Kwarran dari API
   useEffect(() => {
     const fetchKwarranData = async () => {
       try {
-        const result = await fetchKwarran(); // Fetch Kwarran data
-        setKwarranList(result.data || []); // Set Kwarran list
+        const result = await fetchKwarran();
+        setKwarranList(result.data || []); // Pastikan hasil selalu array
       } catch (error) {
         console.error("Error fetching Kwarran data:", error);
       }
@@ -51,7 +49,7 @@ const AdminGugusdepan = () => {
 
   const headers = [
     { key: "no_gudep", label: "No. Gudep" },
-    { key: "kwarran_id", label: "Kwarran" },
+    { key: "kwarran_nama", label: "Kwarran" }, // Menggunakan `kwarran_nama` bukan `kwarran_id`
     { key: "tingkatan", label: "Tingkatan" },
     { key: "jumlah_putra", label: "Jumlah Putra" },
     { key: "jumlah_putri", label: "Jumlah Putri" },
@@ -62,24 +60,18 @@ const AdminGugusdepan = () => {
     { key: "pelatih", label: "Pelatih" },
   ];
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleKwarranChange = (e) => {
-    setSelectedKwarran(e.target.value);
-  };
-
-  const handleTingkatanChange = (e) => {
-    setSelectedTingkatan(e.target.value);
-  };
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
+  const handleKwarranChange = (e) => setSelectedKwarran(e.target.value);
+  const handleTingkatanChange = (e) => setSelectedTingkatan(e.target.value);
 
   const formatDate = (dateString) => {
+    if (!dateString) return "-"; // Jika tanggal kosong, tampilkan "-"
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`; // Format: DD-MM-YYYY
+    return date.toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
   };
 
   const filteredData = data
@@ -97,20 +89,22 @@ const AdminGugusdepan = () => {
         (item.pelatih ?? "").toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesKwarran = selectedKwarran
-        ? item.kwarran_id === selectedKwarran
+        ? kwarranList.find((k) => k.id === item.kwarran_id)?.nama ===
+          selectedKwarran
         : true;
 
       const matchesTingkatan = selectedTingkatan
         ? item.tingkatan === selectedTingkatan
         : true;
-
-      const isNotAdmin = item.User?.role !== "admin"; // Mengakses role dari objek User
+      const isNotAdmin = item.User?.role !== "admin"; // Pastikan hanya menampilkan data bukan admin
 
       return matchesSearch && matchesKwarran && matchesTingkatan && isNotAdmin;
     })
     .map((item) => ({
       ...item,
-      tahun_update: formatDate(item.tahun_update), // Format the date for display
+      kwarran_nama:
+        kwarranList.find((k) => k.id === item.kwarran_id)?.nama || "-",
+      tahun_update: formatDate(item.tahun_update), // Format tanggal
     }));
 
   return (
@@ -118,13 +112,12 @@ const AdminGugusdepan = () => {
       <div className="ml-18 rounded-xl shadow-xl">
         <div className="p-4">
           <div className="flex bg-[#9500FF] rounded-2xl mx-2">
-            <span
-              className="items-center text-2xl font-bold px-12 m-auto flex justify-center text-white"
-              style={{ whiteSpace: "nowrap" }}
-            >
+            <span className="items-center text-2xl font-bold px-12 m-auto flex justify-center text-white">
               Data Gugusdepan
             </span>
             <SearchInput value={searchQuery} onChange={handleSearchChange} />
+
+            {/* Dropdown Kwarran */}
             <select
               value={selectedKwarran}
               onChange={handleKwarranChange}
@@ -136,13 +129,15 @@ const AdminGugusdepan = () => {
               {kwarranList.map((kwarran) => (
                 <option
                   key={kwarran.id}
-                  value={kwarran.id}
+                  value={kwarran.nama}
                   className="text-[#9500FF] font-bold"
                 >
                   {kwarran.nama}
                 </option>
               ))}
             </select>
+
+            {/* Dropdown Tingkatan */}
             <select
               value={selectedTingkatan}
               onChange={handleTingkatanChange}
@@ -166,13 +161,11 @@ const AdminGugusdepan = () => {
             </select>
           </div>
 
-          {/* Loading state */}
+          {/* Loading & Error */}
           {loading && <p className="text-center mt-4">Loading data...</p>}
-
-          {/* Error state */}
           {error && <p className="text-center mt-4 text-red-500">{error}</p>}
 
-          {/* Displaying the table or message if no data found */}
+          {/* Menampilkan tabel atau pesan jika data kosong */}
           {filteredData.length === 0 && !loading ? (
             <p className="text-center mt-4">Data tidak ditemukan</p>
           ) : (
