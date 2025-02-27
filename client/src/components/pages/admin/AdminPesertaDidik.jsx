@@ -11,8 +11,8 @@ const AdminPesertaDidik = () => {
   const [data, setData] = useState([]);
   const [kwarranList, setKwarranList] = useState([]);
   const [gudepList, setGudepList] = useState([]);
-  const [selectedGudep, setSelectedGudep] = useState(""); // State for selected No. Gudep
-  const [selectedTingkatan, setSelectedTingkatan] = useState(""); // State for selected Tingkatan
+  const [selectedGudep, setSelectedGudep] = useState("");
+  const [selectedTingkatan, setSelectedTingkatan] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -49,17 +49,21 @@ const AdminPesertaDidik = () => {
     { key: "detailtingkatan", label: "Detail Tingkatan" },
   ];
 
-  // Enrich data with No. Gudep and Tingkatan
   const enrichedData = data.map((item) => {
-    const matchedGudep = gudepList.find((gudep) => gudep.id === item.gudep_id); // Match by gudep_id
+    const matchedGudep = gudepList.find((gudep) => gudep.id === item.gudep_id);
     return {
       ...item,
-      no_gudep: matchedGudep ? matchedGudep.no_gudep : "-", // Get No. Gudep
-      tingkatan: matchedGudep ? matchedGudep.tingkatan : "-", // Get Tingkatan
+      no_gudep: matchedGudep ? matchedGudep.no_gudep : "-",
+      tingkatan: matchedGudep ? matchedGudep.tingkatan : "-",
     };
   });
 
-  // Filter based on search query, No. Gudep, and Tingkatan
+  const uniqueGudep = Array.from(
+    new Set(enrichedData.map((item) => item.no_gudep))
+  );
+
+  const tingkatanOptions = ["Siaga", "Penggalang", "Penegak", "Pandega"];
+
   const filteredData = enrichedData.filter((item) => {
     const matchesSearch =
       item.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -91,12 +95,18 @@ const AdminPesertaDidik = () => {
             <select
               value={selectedGudep}
               onChange={(e) => setSelectedGudep(e.target.value)}
-              className="m-2 p-2 border-2 border-white rounded-md text-white font-bold"
+              className="m-2 p-2 border-2 border-white rounded-md text-white font-bold cursor-pointer"
             >
-              <option value="">No. Gudep</option>
-              {gudepList.map((gudep) => (
-                <option key={gudep.id} value={gudep.no_gudep}>
-                  {gudep.no_gudep}
+              <option value="" className="text-[#9500FF] font-bold">
+                No. Gudep
+              </option>
+              {uniqueGudep.map((gudep, index) => (
+                <option
+                  key={index}
+                  value={gudep}
+                  className="text-[#9500FF] font-bold"
+                >
+                  {gudep}
                 </option>
               ))}
             </select>
@@ -105,10 +115,16 @@ const AdminPesertaDidik = () => {
               onChange={(e) => setSelectedTingkatan(e.target.value)}
               className="m-2 p-2 border-2 border-white rounded-md text-white font-bold"
             >
-              <option value="">Tingkatan</option>
-              {gudepList.map((gudep) => (
-                <option key={gudep.id} value={gudep.tingkatan}>
-                  {gudep.tingkatan}
+              <option value="" className="text-[#9500FF] font-bold">
+                Tingkatan
+              </option>
+              {tingkatanOptions.map((tingkatan, index) => (
+                <option
+                  key={index}
+                  value={tingkatan}
+                  className="text-[#9500FF] font-bold"
+                >
+                  {tingkatan}
                 </option>
               ))}
             </select>

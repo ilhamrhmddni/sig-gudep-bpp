@@ -1,29 +1,35 @@
-// src/pages/AdminGugusdepan.js
 import React, { useState, useEffect } from "react";
-import { fetchGugusdepanId } from "../../../services/GugusdepanService"; // Updated to fetch by ID
+import { fetchGugusdepanId } from "../../../services/GugusdepanService";
 import { fetchKwarran } from "../../../services/KwarranService";
-import { editGugusdepan } from "../../../services/GugusdepanService"; // Import the edit function
+import { editGugusdepan } from "../../../services/GugusdepanService";
 import Swal from "sweetalert2";
 import OperatorTemplate from "../../templates/OperatorTemplate";
 
 const OperatorGugusdepan = () => {
-  const [data, setData] = useState(null); // State for single Gugusdepan data
+  const [data, setData] = useState(null);
   const [kwarranList, setKwarranList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [jumlahPutra, setJumlahPutra] = useState(0);
+  const [jumlahPutri, setJumlahPutri] = useState(0);
+  const [noGudep, setNoGudep] = useState(""); // State for No. Gudep input
 
-  // Fetching Gugusdepan data by ID from local storage
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const userId = localStorage.getItem("gudep_id"); // Retrieve gudep_id from local storage
+        const userId = localStorage.getItem("gudep_id");
         if (!userId) {
           throw new Error("User  ID not found in local storage.");
         }
 
-        const result = await fetchGugusdepanId(userId); // Fetch data by user ID
-        setData(result.data); // Set the fetched data
+        console.log("Fetching Gugusdepan data for user ID:", userId);
+        const result = await fetchGugusdepanId(userId);
+        console.log("Gugusdepan data fetched:", result.data);
+        setData(result.data);
+        setJumlahPutra(result.data.jumlah_putra || 0); // Ambil jumlah putra dari data
+        setJumlahPutri(result.data.jumlah_putri || 0); // Ambil jumlah putri dari data
+        setNoGudep(result.data.no_gudep || ""); // Ambil No. Gudep dari data
         setError(null);
       } catch (error) {
         setError("Error fetching data.");
@@ -36,12 +42,11 @@ const OperatorGugusdepan = () => {
     fetchData();
   }, []);
 
-  // Fetching Kwarran data for filter options
   useEffect(() => {
     const fetchKwarranData = async () => {
       try {
         const result = await fetchKwarran();
-        setKwarranList(result.data || []);
+        setKwarranList(result.data);
       } catch (error) {
         console.error("Error fetching Kwarran data:", error);
       }
@@ -51,6 +56,13 @@ const OperatorGugusdepan = () => {
   }, []);
 
   const handleSave = async () => {
+    console.log("Saving data:", {
+      ...data,
+      jumlah_putra: jumlahPutra,
+      jumlah_putri: jumlahPutri,
+      no_gudep: noGudep, // Include No. Gudep from input
+    });
+
     Swal.fire({
       title: "Konfirmasi",
       text: "Apakah Anda yakin ingin menyimpan data ini?",
@@ -64,10 +76,22 @@ const OperatorGugusdepan = () => {
       if (result.isConfirmed) {
         try {
           const userId = localStorage.getItem("gudep_id");
-          await editGugusdepan(userId, data); // Update the data
+          await editGugusdepan(userId, {
+            ...data,
+            jumlah_putra: jumlahPutra,
+            jumlah_putri: jumlahPutri,
+            no_gudep: noGudep, // Update No. Gudep
+          });
           Swal.fire("Sukses!", "Data Anda telah disimpan.", "success");
+
+          // Ambil data terbaru setelah menyimpan
+          const updatedResult = await fetchGugusdepanId(userId);
+          setData(updatedResult.data);
+          setJumlahPutra(updatedResult.data.jumlah_putra || 0); // Update jumlah putra
+          setJumlahPutri(updatedResult.data.jumlah_putri || 0); // Update jumlah putri
         } catch (error) {
           Swal.fire("Error!", "Gagal menyimpan data.", "error");
+          console.error("Error saving data:", error);
         }
       }
     });
@@ -78,15 +102,12 @@ const OperatorGugusdepan = () => {
       <div className="ml-18 rounded-xl shadow-xl">
         <div className="p-4">
           <div className="flex justify-between items-center bg-[#9500FF] rounded-2xl px-8 py-2 ">
-            <span
-              className="text-2xl font-bold text-white"
-              style={{ whiteSpace: "nowrap" }}
-            >
+            <span className="text-2xl font-bold text-white">
               Data Gugusdepan
             </span>
             <button
               onClick={handleSave}
-              className="bg-[#9500FF] text-white px-4 py-2 rounded-2xl border-2 rounded-white cursor-pointer font-bold flex gap-2"
+              className="bg-[#9500FF] text-white px-4 py-2 rounded-2xl border-2 cursor-pointer font-bold flex gap-2"
             >
               <span className="material-icons">save</span>
               Simpan
@@ -98,41 +119,30 @@ const OperatorGugusdepan = () => {
 
           {data ? (
             <div className="m-4 grid grid-cols-2 gap-4 text-xl my-8">
-              {/* Left Column */}
               <div className="flex flex-col px-4">
-                {/* Jumlah Putra and Putri (Disabled) */}
                 <div className="flex gap-8 my-4 justify-between">
-                  <label
-                    className="text-[#9500FF] font-bold"
-                    style={{ whiteSpace: "nowrap" }}
-                  >
-                    {" "}
+                  <label className="text-[#9500FF] font-bold">
                     Jumlah Putra:
                   </label>
-
                   <input
                     type="number"
-                    value={data.jumlah_putra || 0} // Default to 0 if null
-                    disabled
-                    className=" rounded p-1 w-full text-right "
+                    value={jumlahPutra}
+                    onChange={(e) => setJumlahPutra(e.target.value)}
+                    className="rounded p-1 w-full text-right"
                   />
                 </div>
                 <div className="flex gap-9 my-4">
-                  <label
-                    className="text-[#9500FF] font-bold"
-                    style={{ whiteSpace: "nowrap" }}
-                  >
+                  <label className="text-[#9500FF] font-bold">
                     Jumlah Putri:
                   </label>
                   <input
                     type="number"
-                    value={data.jumlah_putri || 0} // Default to 0 if null
-                    disabled
+                    value={jumlahPutri}
+                    onChange={(e) => setJumlahPutri(e.target.value)}
                     className="rounded p-1 w-full text-right"
                   />
                 </div>
 
-                {/* Kwarran Dropdown */}
                 <div className="flex justify-between my-4 gap-24">
                   <label className="text-[#9500FF] font-bold">Kwarran:</label>
                   <select
@@ -151,7 +161,6 @@ const OperatorGugusdepan = () => {
                   </select>
                 </div>
 
-                {/* Tingkatan Dropdown */}
                 <div className="flex justify-between my-4 gap-19">
                   <label className="text-[#9500FF] font-bold">Tingkatan:</label>
                   <select
@@ -168,9 +177,20 @@ const OperatorGugusdepan = () => {
                     <option value="Pandega">Pandega</option>
                   </select>
                 </div>
+
+                {/* Input untuk mengubah No. Gudep */}
+                <div className="flex justify-between my-4 gap-24">
+                  <label className="text-[#9500FF] font-bold">No. Gudep:</label>
+                  <input
+                    type="text"
+                    value={noGudep}
+                    onChange={(e) => setNoGudep(e.target.value)}
+                    className="border rounded p-1 w-full"
+                    placeholder="Masukkan No. Gudep"
+                  />
+                </div>
               </div>
 
-              {/* Right Column */}
               <div className="flex flex-col px-4">
                 <div className="flex justify-between my-4 gap-24">
                   <label className="text-[#9500FF] font-bold">Email:</label>

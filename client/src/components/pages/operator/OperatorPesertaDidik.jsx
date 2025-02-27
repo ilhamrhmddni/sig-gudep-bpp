@@ -8,6 +8,10 @@ import {
   fetchPesertadidik,
   deletePesertadidik,
 } from "../../../services/PesertadidikService"; // Update to include CRUD services
+import {
+  editGugusdepan,
+  fetchGugusdepanId,
+} from "../../../services/GugusdepanService"; // Import for updating gugusdepan
 import Swal from "sweetalert2";
 
 const OperatorPesertaDidik = () => {
@@ -26,7 +30,10 @@ const OperatorPesertaDidik = () => {
       try {
         setLoading(true);
         const pesertaResult = await fetchPesertadidik(gudepId); // Fetch data using gudepId
-        setData(Array.isArray(pesertaResult.data) ? pesertaResult.data : []);
+        const fetchedData = Array.isArray(pesertaResult.data)
+          ? pesertaResult.data.filter((item) => item.gudep_id === gudepId) // Filter data berdasarkan gudep_id
+          : [];
+        setData(fetchedData);
         setError(null);
       } catch (error) {
         setError("Error fetching data.");
@@ -67,9 +74,42 @@ const OperatorPesertaDidik = () => {
 
     if (confirmDelete.isConfirmed) {
       try {
-        await deletePesertadidik(id);
-        setData(data.filter((item) => item.id !== id)); // Update local state
+        // Ambil data peserta yang akan dihapus untuk mengetahui gender-nya
+        const pesertaToDelete = data.find((item) => item.id === id);
+        const genderToDelete = pesertaToDelete.gender;
+
+        // Hapus peserta didik
+        const result = await deletePesertadidik(id);
+        console.log("Delete response:", result); // Log respons dari penghapusan
         Swal.fire("Deleted!", "Peserta Didik has been deleted.", "success");
+
+        // Ambil data lama dari gugus depan
+        const gugusData = await fetchGugusdepanId(gudepId);
+        const jumlahPutraLama = gugusData.data.jumlah_putra || 0; // Ambil jumlah putra lama
+        const jumlahPutriLama = gugusData.data.jumlah_putri || 0; // Ambil jumlah putri lama
+
+        // Hitung jumlah baru
+        const updatedJumlahPutra =
+          genderToDelete === "Laki-laki"
+            ? jumlahPutraLama - 1
+            : jumlahPutraLama;
+        const updatedJumlahPutri =
+          genderToDelete === "Perempuan"
+            ? jumlahPutriLama - 1
+            : jumlahPutriLama;
+
+        // Update jumlah peserta di gugus depan
+        await editGugusdepan(gudepId, {
+          jumlah_putra: updatedJumlahPutra,
+          jumlah_putri: updatedJumlahPutri,
+        });
+
+        // Refresh data setelah penghapusan
+        const pesertaResult = await fetchPesertadidik(gudepId);
+        const fetchedData = Array.isArray(pesertaResult.data)
+          ? pesertaResult.data.filter((item) => item.gudep_id === gudepId)
+          : [];
+        setData(fetchedData); // Update state dengan data terbaru
       } catch (error) {
         Swal.fire(
           "Error!",
@@ -101,18 +141,11 @@ const OperatorPesertaDidik = () => {
               Data Peserta Didik
             </span>
             <SearchInput value={searchQuery} onChange={handleSearchChange} />
-            <AddButton
-              route={"/operator/pesertadidik/add"} // Assuming you have a route for adding participants
-            />
+            <AddButton route={"/operator/pesertadidik/add"} />
           </div>
 
-          {/* Loading state */}
           {loading && <p className="text-center mt-4">Loading data...</p>}
-
-          {/* Error state */}
           {error && <p className="text-center mt-4 text-red-500">{error}</p>}
-
-          {/* Displaying the table or message if no data found */}
           {filteredData.length === 0 && !loading ? (
             <p className="text-center mt-4">Data tidak ditemukan</p>
           ) : (

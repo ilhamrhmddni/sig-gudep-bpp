@@ -22,8 +22,11 @@ import AdminEventForm from "./components/pages/admin/AdminEventForm";
 import AdminProfile from "./components/pages/admin/AdminProfile";
 import OperatorPrestasiForm from "./components/pages/operator/OperatorPrestasiForm";
 import OperatorEventForm from "./components/pages/operator/OperatorEventForm";
-import OperatorPesertaDidikForm from "./components/pages/operator/OperatorGugusDepanForm";
+import OperatorPesertaDidikForm from "./components/pages/operator/OperatorPesertaDidikForm";
 import OperatorProfile from "./components/pages/operator/OperatorProfile";
+import UserDashboard from "./components/pages/user/UserDashboard";
+import UserGugusdepan from "./components/pages/user/UserGugusdepan";
+import UserLaporan from "./components/pages/user/UserLaporan";
 
 const App = () => {
   const token = localStorage.getItem("token");
@@ -283,6 +286,9 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/" element={<UserDashboard />} />
+        <Route path="/gugusdepan" element={<UserGugusdepan />} />
+        <Route path="/laporan" element={<UserLaporan />} />
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound role={roleUser} />} />
       </Routes>

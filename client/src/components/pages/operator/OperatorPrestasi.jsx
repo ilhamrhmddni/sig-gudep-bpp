@@ -18,8 +18,13 @@ const OperatorPrestasi = () => {
       try {
         setLoading(true);
         const result = await fetchEventGudeps();
-        console.log(result); // Log the result for debugging
-        setData(Array.isArray(result.data) ? result.data : []);
+        const gudepId = localStorage.getItem("gudep_id");
+
+        // Filter data berdasarkan gudep_id
+        const filteredData = result.data.filter(
+          (item) => item.gudep_id === gudepId
+        );
+        setData(filteredData);
         setError(null);
       } catch (error) {
         setError("Error fetching data.");

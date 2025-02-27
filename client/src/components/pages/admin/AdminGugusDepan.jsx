@@ -112,7 +112,10 @@ const AdminGugusdepan = () => {
       <div className="ml-18 rounded-xl shadow-xl">
         <div className="p-4">
           <div className="flex bg-[#9500FF] rounded-2xl mx-2">
-            <span className="items-center text-2xl font-bold px-12 m-auto flex justify-center text-white">
+            <span
+              className="items-center text-2xl font-bold px-12 m-auto flex justify-center text-white"
+              style={{ whiteSpace: "nowrap" }}
+            >
               Data Gugusdepan
             </span>
             <SearchInput value={searchQuery} onChange={handleSearchChange} />

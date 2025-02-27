@@ -102,3 +102,18 @@ export const deletePesertadidik = async (id) => {
     throw error;
   }
 };
+
+export const fetchPesertadidikByGudep = async (gudepId) => {
+  const response = await fetch(`${API_URL}pesertadidik?gudep_id=${gudepId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch Peserta Didik");
+  }
+
+  return await response.json(); // Kembalikan data yang diterima dari server
+};

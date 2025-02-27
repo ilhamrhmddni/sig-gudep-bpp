@@ -65,8 +65,13 @@ const AdminPrestasi = () => {
     keterangan: item.keterangan,
   }));
 
-  const uniqueTingkatan = [
-    ...new Set(data.map((item) => item.Gudep.tingkatan)),
+  // Fixed options for Tingkatan
+  const tingkatanOptions = [
+    "Siaga",
+    "Penggalang",
+    "Penegak",
+    "Pandega",
+    "Penegak/Pandega",
   ];
 
   return (
@@ -89,7 +94,7 @@ const AdminPrestasi = () => {
               <option value="" className="text-[#9500FF] font-bold">
                 Tingkatan
               </option>
-              {uniqueTingkatan.map((tingkatan) => (
+              {tingkatanOptions.map((tingkatan) => (
                 <option
                   key={tingkatan}
                   value={tingkatan}

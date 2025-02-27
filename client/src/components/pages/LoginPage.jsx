@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, replace, useNavigate } from "react-router-dom";
 import TextInput from "../atoms/TextInput";
 import FormLabel from "../atoms/FormLabel";
 import PrimaryButton from "../atoms/PrimaryButton";
@@ -7,7 +7,7 @@ import { login } from "../../services/AuthService";
 import Swal from "sweetalert2";
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ nama: "", password: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -27,6 +27,10 @@ const LoginPage = () => {
     }
   }, [navigate]);
 
+  const handleDashboard = (e) => {
+    navigate("/"), { replace: true };
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -34,13 +38,13 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { username, password } = formData;
+    const { email, password } = formData;
 
-    if (!username || !password) {
+    if (!email || !password) {
       Swal.fire({
         icon: "warning",
         title: "Input Tidak Valid",
-        text: "Username dan password harus diisi.",
+        text: "Email dan password harus diisi.",
       });
       return;
     }
@@ -48,7 +52,7 @@ const LoginPage = () => {
     setLoading(true); // Set loading to true
 
     try {
-      const response = await login(username, password);
+      const response = await login(email, password);
       if (response && response.token) {
         // Save important data in localStorage
         localStorage.setItem("token", response.token);
@@ -114,14 +118,14 @@ const LoginPage = () => {
         >
           <div className="flex flex-col gap-4 items-center sm:items-stretch">
             <div>
-              <FormLabel htmlFor="username" text="Username" />
+              <FormLabel htmlFor="Email" text="Email" />
               <TextInput
-                id="username"
-                name="username"
-                type="text"
-                value={formData.username}
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
                 onChange={handleChange}
-                placeholder="Masukkan username"
+                placeholder="Masukkan Email"
               />
             </div>
             <div>
@@ -137,10 +141,16 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center ">
             <PrimaryButton text="Login" type="submit" />
           </div>
         </form>
+        <button
+          className="text-white cursor-pointer hover:font-bold hover:text-[#9500FF] hover:line-"
+          onClick={handleDashboard}
+        >
+          Kembali Ke Halaman Dashboard
+        </button>
       </div>
     </div>
   );

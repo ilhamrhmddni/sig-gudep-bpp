@@ -54,7 +54,7 @@ const OperatorTemplate = ({ children }) => {
           transition: "margin-left 0.3s ease",
         }}
       >
-        <Header title="Dashboard Admin" />
+        <Header title="Dashboard Operator" />
         {/* Konten halaman utama */}
         <div className="p-4">{children}</div>
       </div>
