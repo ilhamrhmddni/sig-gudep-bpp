@@ -34,11 +34,14 @@ const App = () => {
 
   if (token) {
     try {
-      roleUser = jwtDecode(token).role; // Decode the token to get the role
+      const decoded = jwtDecode(token);
+      console.log("Decoded Token:", decoded);
+      roleUser = decoded.role;
     } catch (error) {
       console.error("Invalid token");
     }
   }
+
   return (
     <Router>
       <Routes>

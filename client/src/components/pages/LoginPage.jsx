@@ -7,21 +7,25 @@ import { login } from "../../services/AuthService";
 import Swal from "sweetalert2";
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ nama: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
+    const currentPath = window.location.pathname;
+
+    console.log("Token:", token);
+    console.log("Role:", role);
+    console.log("Current Path:", currentPath);
 
     if (token && role) {
-      // Pastikan ada token dan role
       setTimeout(() => {
-        if (role === "admin") {
-          navigate("admin/kwarran", { replace: true });
-        } else if (role === "operator") {
-          navigate("operator/gugusdepan", { replace: true });
+        if (role === "admin" && currentPath !== "/admin/kwarran") {
+          console.log("Navigating to /admin/kwarran...");
+          navigate("/admin/kwarran", { replace: true });
+          console.log("Should be redirected to /admin/kwarran");
         }
       }, 100);
     }
@@ -71,10 +75,12 @@ const LoginPage = () => {
         });
 
         // Add a leading slash to the redirect URL
-        const redirectUrl = response.redirectUrl.startsWith("/")
-          ? response.redirectUrl
-          : `/${response.redirectUrl}`;
-        // Redirect to the URL provided by the server
+        let redirectUrl = response.redirectUrl || "/"; // Default jika tidak ada redirect URL
+
+        if (!redirectUrl.startsWith("/")) {
+          redirectUrl = `/${redirectUrl}`;
+        }
+
         navigate(redirectUrl, { replace: true });
       } else {
         // If token is not present, login failed
